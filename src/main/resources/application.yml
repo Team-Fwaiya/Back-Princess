@@ -25,7 +25,19 @@ spring:
 server:
   port: 8080
 
+# Swagger 설정
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
 logging:
   level:
-    com.fwaiya.princess: DEBUG
-    org.springframework.web: DEBUG
+    com.fwaiya.princess_backend: DEBUG
