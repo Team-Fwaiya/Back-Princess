@@ -1,8 +1,13 @@
 package com.fwaiya.princess_backend.login.service;
 
 import com.fwaiya.princess_backend.domain.User;
+import com.fwaiya.princess_backend.global.api.ApiResponse;
+import com.fwaiya.princess_backend.global.api.ErrorCode;
+import com.fwaiya.princess_backend.global.api.SuccessCode;
+import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.login.dto.JoinRequestDto;
 import com.fwaiya.princess_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +20,8 @@ public class JoinService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void joinProcess(JoinRequestDto joinRequestDto) {
+    @Transactional
+    public ApiResponse<?> joinProcess(JoinRequestDto joinRequestDto) {
 
         String nickname = joinRequestDto.getNickname();
         String password = joinRequestDto.getPassword();
@@ -25,8 +31,7 @@ public class JoinService {
         Boolean isExist = userRepository.existsByNickname(nickname);
 
         if (isExist) {
-
-            return;
+            throw new GeneralException(ErrorCode.ALREADY_USED_NICKNAME);
         }
 
         User user = new User();
@@ -37,6 +42,8 @@ public class JoinService {
         user.setBirthDate(birthDate);
 
         userRepository.save(user);
+
+        return ApiResponse.onSuccess(SuccessCode.USER_JOIN_SUCCESS, "회원가입이 완료되었습니다.");
     }
 
 }
