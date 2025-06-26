@@ -31,7 +31,7 @@ public class SecurityConfig {
                                 "/join"
                         ).permitAll()
                         // admin 페이지엔 role이 관리자일 때만 접근 가능
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        //.requestMatchers("/admin").hasRole("ADMIN")
                         // 외엔 로그인한 사용자만 접근 가능
                         .anyRequest().authenticated());
         // 세션 설정

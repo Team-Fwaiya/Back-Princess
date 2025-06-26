@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/** * 사용자 엔티티 클래스 ** @author yaaan7 @since 2025-06-26 */
 @Entity
 @Setter
 @Getter
@@ -21,7 +22,7 @@ public class User {
 
     // 8글자 제한
     @Column(nullable = false)
-    private String username;
+    private String nickname;
 
     @Column(nullable = false)
     private String password;
@@ -32,7 +33,4 @@ public class User {
 
     @Column(nullable = false)
     private LocalDate birthDate;
-
-    @Column(nullable = false)
-    private String role;
 }
