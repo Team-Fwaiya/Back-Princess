@@ -23,14 +23,19 @@ public class JoinService {
     @Transactional
     public ApiResponse<?> joinProcess(JoinRequestDto joinRequestDto) {
 
+        String userId = joinRequestDto.getUserId();
         String nickname = joinRequestDto.getNickname();
         String password = joinRequestDto.getPassword();
         String imagePath = joinRequestDto.getImagePath();
         LocalDate birthDate = joinRequestDto.getBirthDate();
 
-        Boolean isExist = userRepository.existsByNickname(nickname);
+        Boolean isExist1 = userRepository.existsByUserId(userId);
+        if (isExist1) {
+            throw new GeneralException(ErrorCode.ALREADY_USED_USERID);
+        }
 
-        if (isExist) {
+        Boolean isExist2 = userRepository.existsByNickname(nickname);
+        if (isExist2) {
             throw new GeneralException(ErrorCode.ALREADY_USED_NICKNAME);
         }
 

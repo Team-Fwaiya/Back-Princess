@@ -10,6 +10,7 @@ import java.time.LocalDate;;
 @Setter
 public class JoinRequestDto {
 
+    private String userId;
     private String nickname;
     private String password;
     private LocalDate birthDate;

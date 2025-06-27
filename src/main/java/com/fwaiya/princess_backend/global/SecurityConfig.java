@@ -5,9 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
@@ -21,12 +27,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // cors 설정
+        //http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         // csrf disable
-        http.csrf(csrf -> csrf.disable());
+        http.csrf(AbstractHttpConfigurer::disable);
         // 기존 로그인 방식 disable
-        http.formLogin((auth) -> auth.disable());
+        http.formLogin(AbstractHttpConfigurer::disable);
         // http basic 인증 방식 disable
-        http.httpBasic((auth) -> auth.disable());
+        http.httpBasic(AbstractHttpConfigurer::disable);
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
@@ -34,8 +42,14 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/login",
                                 "/",
-                                "/join"
+                                "/join",
+
+                                // Swagger 관련 경로 허가
+                                "/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
                         ).permitAll()
+
                         // admin 페이지엔 role이 관리자일 때만 접근 가능
                         //.requestMatchers("/admin").hasRole("ADMIN")
                         // 외엔 로그인한 사용자만 접근 가능
@@ -47,4 +61,20 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    // cors 설정 - Swagger 테스트 용으로 임시
+    /*@Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:3000")); // 프론트 테스트 환경
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }*/
 }

@@ -9,9 +9,12 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode implements BaseCode { // 실패
 
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "서버 에러, 서버 개발자에게 문의하세요."),
+
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4041", "존재하지 않는 회원입니다."),
-    ALREADY_USED_NICKNAME(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용중인 닉네임입니다.");
+    ALREADY_USED_NICKNAME(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용중인 닉네임입니다."),
+    ALREADY_USED_USERID(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용중인 닉네임입니다.");
 
     // Jwt
     /*WRONG_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "JWT_4041", "일치하는 리프레시 토큰이 없습니다."),

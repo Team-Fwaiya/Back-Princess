@@ -20,6 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String userId;
+
     // 8글자 제한
     @Column(nullable = false)
     private String nickname;
