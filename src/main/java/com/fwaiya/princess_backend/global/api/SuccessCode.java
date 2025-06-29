@@ -14,8 +14,9 @@ public enum SuccessCode implements BaseCode { // 성공
     // User
     USER_JOIN_SUCCESS(HttpStatus.CREATED, "USER_201", "회원가입이 완료되었습니다."),
     USER_LOGIN_SUCCESS(HttpStatus.CREATED, "USER_201", "로그인이 완료되었습니다."),
-    USER_REISSUE_SUCCESS(HttpStatus.OK, "USER_200", "토큰 재발급이 완료되었습니다."),
-    USER_DELETE_SUCCESS(HttpStatus.OK, "USER_200", "회원탈퇴가 완료되었습니다.");
+    USER_DELETE_SUCCESS(HttpStatus.OK, "USER_200", "회원탈퇴가 완료되었습니다."),
+
+    USER_NICKNAME_GET_SUCCESS(HttpStatus.OK, "USER_200", "닉네임 조회가 완료되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
