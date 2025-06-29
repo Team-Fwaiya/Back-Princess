@@ -31,9 +31,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // 기본 값 설정하기
+    // 기본 값 수정하기
     @Column(nullable = false)
-    private String imagePath;
+    private String imagePath= "default.jpg";;
 
     @Column(nullable = false)
     private LocalDate birthDate;
