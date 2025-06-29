@@ -29,13 +29,11 @@ public class CustomUserDetails implements UserDetails {
         return user.getPassword();
     }
 
-    // 회원 탈퇴 기능 구현할 때 수정하기
     @Override
     public boolean isEnabled() {
         return true;
     }
 
-    //
     @Override
     public boolean isAccountNonExpired() {
         return true;

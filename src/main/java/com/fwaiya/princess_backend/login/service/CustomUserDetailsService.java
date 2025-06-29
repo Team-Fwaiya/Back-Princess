@@ -1,6 +1,8 @@
 package com.fwaiya.princess_backend.login.service;
 
 import com.fwaiya.princess_backend.domain.User;
+import com.fwaiya.princess_backend.global.api.ErrorCode;
+import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("유저 없음"));
-
-        log.info("유저 username: {}", user.getUsername());
-        log.info("유저 password(DB): {}", user.getPassword());
-
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
         return new CustomUserDetails(user);
     }
 }

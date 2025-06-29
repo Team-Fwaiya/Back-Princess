@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+/** *회원가입을 진행하는 서비스 클래스 * 사용자 등록 기능 제공 **@author yaaan7 *@since 2025-06-26*/
 @Service
 @RequiredArgsConstructor
 public class JoinService {
@@ -26,7 +27,6 @@ public class JoinService {
         String username = joinRequestDto.getUserId();
         String nickname = joinRequestDto.getNickname();
         String password = joinRequestDto.getPassword();
-        String imagePath = joinRequestDto.getImagePath();
         LocalDate birthDate = joinRequestDto.getBirthDate();
 
         Boolean isExist1 = userRepository.existsByUsername(username);
@@ -44,9 +44,8 @@ public class JoinService {
         user.setUsername(username);
         user.setNickname(nickname);
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        user.setImagePath(imagePath);
         user.setBirthDate(birthDate);
-        user.setRole("ROLE_ADMIN"); // 수정하기 `
+        user.setRole("ROLE_USER");
 
         userRepository.save(user);
 

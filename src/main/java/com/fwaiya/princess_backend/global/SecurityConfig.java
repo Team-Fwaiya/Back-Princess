@@ -59,6 +59,7 @@ public class SecurityConfig {
 
                                 // Swagger 관련 경로 허가
                                 "/api-docs/**",
+                                "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()

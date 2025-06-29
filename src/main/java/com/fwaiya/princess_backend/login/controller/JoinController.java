@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ResponseBody
 @RequiredArgsConstructor
-@Tag(name = "회원가입", description = "회원가입 로직")
+@Tag(name = "01. 회원가입", description = "회원가입 API")
 public class JoinController {
     private final JoinService joinService;
 
-    @Operation(summary="회원가입")
+    @Operation(summary="회원가입", description = "사용자 정보를 받아 회원가입을 진행합니다.")
     @PostMapping("/join")
     public ApiResponse<?> joinProcess(JoinRequestDto joinRequestDto) {
 
@@ -34,12 +34,11 @@ public class JoinController {
             log.info("회원가입 성공");
             return ApiResponse.onSuccess(SuccessCode.USER_JOIN_SUCCESS,"");
         } catch (GeneralException e) {
-            log.error("[ERROR] 회원가입 중 예외 발생: {}", e.getReason().getMessage());
+            log.error("회원가입 중 예외 발생: {}", e.getReason().getMessage());
             throw e;
         } catch (Exception e){
-            log.error("[ERROR] 알 수 없는 예외 발생: {}", e.getMessage());
+            log.error("알 수 없는 예외 발생: {}", e.getMessage());
             throw new GeneralException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
-
-        }
+    }
 }

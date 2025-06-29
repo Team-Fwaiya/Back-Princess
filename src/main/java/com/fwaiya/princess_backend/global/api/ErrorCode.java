@@ -16,17 +16,16 @@ public enum ErrorCode implements BaseCode { // 실패
     ALREADY_USED_NICKNAME(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용 중인 닉네임입니다."),
     ALREADY_USED_USERID(HttpStatus.FORBIDDEN, "USER_4032", "이미 사용 중인 아이디 입니다."),
 
-    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "USER_4011", "자격 증명이 유효하지 않습니다.");
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "USER_4011", "자격 증명이 유효하지 않습니다."),
 
-    //PASSWORD_MISMATCH("AUTH_401", "비밀번호가 일치하지 않습니다."),
-    //LOGIN_FAILED("AUTH_400", "로그인에 실패했습니다.");
+    PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "AUTH_4011", "비밀번호가 일치하지 않습니다."),
+    LOGIN_FAILED(HttpStatus.UNAUTHORIZED,"AUTH_4001", "로그인에 실패했습니다."),
 
     // Jwt
-    /*WRONG_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "JWT_4041", "일치하는 리프레시 토큰이 없습니다."),
-    IP_NOT_MATCHED(HttpStatus.FORBIDDEN, "JWT_4031", "리프레시 토큰의 IP주소가 일치하지 않습니다."),
-    TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_4032", "유효하지 않은 토큰입니다."),
-    TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4033", "권한 정보가 없는 토큰입니다."),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4011", "토큰 유효기간이 만료되었습니다.");*/
+    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JWT_4011", "Authorization 헤더가 없거나 형식이 올바르지 않습니다."),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4012", "토큰 유효기간이 만료되었습니다."),
+    TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_4031", "유효하지 않은 토큰입니다."),
+    TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4031", "권한 정보가 없는 토큰입니다.");
 
 
     private final HttpStatus httpStatus;

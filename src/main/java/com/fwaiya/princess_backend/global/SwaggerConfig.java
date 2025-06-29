@@ -23,6 +23,6 @@ public class SwaggerConfig {
                         .name("Authorization")
                         .type(SecurityScheme.Type.APIKEY)
                         .in(SecurityScheme.In.HEADER)
-                        .description("Access Token을 입력하세요."));
+                        .description("'Bearer '을 입력한 후 이어서 토큰을 입력하세요!(띄어쓰기!)"));
     }
 }

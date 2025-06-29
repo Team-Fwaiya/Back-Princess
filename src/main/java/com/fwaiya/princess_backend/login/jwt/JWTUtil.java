@@ -1,8 +1,5 @@
 package com.fwaiya.princess_backend.login.jwt;
 
-
-//2025-06-28
-
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,8 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-/** JWT 발급 및 검증 **/
-
+/** JWT 발급 및 검증, 파싱 *@author yaaan7 * @since 2025-06-28 */
 @Component
 public class JWTUtil {
 
@@ -28,20 +24,15 @@ public class JWTUtil {
         this.expiredMs = expiredMs;
     }
 
-
-
     public String getUsername(String token) {
-
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
 
     public String getRole(String token) {
-
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
     public Boolean isExpired(String token) {
-
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 

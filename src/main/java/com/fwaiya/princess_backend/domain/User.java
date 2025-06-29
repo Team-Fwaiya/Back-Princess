@@ -31,14 +31,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // 프로필 사진 S3 url
+    // 기본 값 설정하기
     @Column(nullable = false)
     private String imagePath;
 
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    // 초기화 값 설정하기
     @Column(nullable = false)
     private String role;
 }
