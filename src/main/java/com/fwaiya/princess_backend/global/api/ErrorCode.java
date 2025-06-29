@@ -13,8 +13,10 @@ public enum ErrorCode implements BaseCode { // 실패
 
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4041", "존재하지 않는 회원입니다."),
-    ALREADY_USED_NICKNAME(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용중인 닉네임입니다."),
-    ALREADY_USED_USERID(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용중인 닉네임입니다.");
+    ALREADY_USED_NICKNAME(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용 중인 닉네임입니다."),
+    ALREADY_USED_USERID(HttpStatus.FORBIDDEN, "USER_4032", "이미 사용 중인 아이디 입니다."),
+
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "USER_4011", "자격 증명이 유효하지 않습니다.");
 
     //PASSWORD_MISMATCH("AUTH_401", "비밀번호가 일치하지 않습니다."),
     //LOGIN_FAILED("AUTH_400", "로그인에 실패했습니다.");
