@@ -15,16 +15,17 @@ import java.time.LocalDate;
 public class User {
 
     @Id
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     @Setter(AccessLevel.PRIVATE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String userId;
+    // = userId
+    @Column(unique = true, nullable = false)
+    private String username;
 
     // 8글자 제한
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String nickname;
 
     @Column(nullable = false)
@@ -36,4 +37,8 @@ public class User {
 
     @Column(nullable = false)
     private LocalDate birthDate;
+
+    // 초기화 값 설정하기
+    @Column(nullable = false)
+    private String role;
 }

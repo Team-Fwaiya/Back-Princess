@@ -23,13 +23,13 @@ public class JoinService {
     @Transactional
     public ApiResponse<?> joinProcess(JoinRequestDto joinRequestDto) {
 
-        String userId = joinRequestDto.getUserId();
+        String username = joinRequestDto.getUserId();
         String nickname = joinRequestDto.getNickname();
         String password = joinRequestDto.getPassword();
         String imagePath = joinRequestDto.getImagePath();
         LocalDate birthDate = joinRequestDto.getBirthDate();
 
-        Boolean isExist1 = userRepository.existsByUserId(userId);
+        Boolean isExist1 = userRepository.existsByUsername(username);
         if (isExist1) {
             throw new GeneralException(ErrorCode.ALREADY_USED_USERID);
         }
@@ -41,10 +41,12 @@ public class JoinService {
 
         User user = new User();
 
+        user.setUsername(username);
         user.setNickname(nickname);
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setImagePath(imagePath);
         user.setBirthDate(birthDate);
+        user.setRole("ROLE_ADMIN"); // 수정하기 `
 
         userRepository.save(user);
 

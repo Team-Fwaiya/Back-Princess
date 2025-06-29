@@ -1,5 +1,7 @@
 package com.fwaiya.princess_backend.global;
 
+import com.fwaiya.princess_backend.login.jwt.JWTFilter;
+import com.fwaiya.princess_backend.login.jwt.JWTUtil;
 import com.fwaiya.princess_backend.login.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +25,12 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final AuthenticationConfiguration authenticationConfiguration;
+    private final AuthenticationConfiguration configuration;
+    private final JWTUtil jwtUtil;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
@@ -38,7 +41,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // cors 설정
-        //http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         // csrf disable
         http.csrf(AbstractHttpConfigurer::disable);
         // 기존 로그인 방식 disable
@@ -61,11 +64,14 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // admin 페이지엔 role이 관리자일 때만 접근 가능
-                        //.requestMatchers("/admin").hasRole("ADMIN")
+                        // http.requestMatchers("/admin").hasRole("ADMIN")
                         // 외엔 로그인한 사용자만 접근 가능
                         .anyRequest().authenticated());
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(configuration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         // 세션 설정
         http
                 .sessionManagement((session)-> session
@@ -74,8 +80,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // cors 설정 - Swagger 테스트 용으로 임시
-    /*@Bean
+    // cors 설정
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
@@ -88,5 +94,5 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
-    }*/
+    }
 }
