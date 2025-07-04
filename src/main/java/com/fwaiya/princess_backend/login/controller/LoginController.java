@@ -9,16 +9,20 @@ import com.fwaiya.princess_backend.login.jwt.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /** * JWT 토큰을 반환받는 컨트롤러 클래스 * 로그인 기능 제공 ** @author yaaan7 * @since 2025-06-29 */
+@Slf4j
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
@@ -42,8 +46,17 @@ public class LoginController {
 
             return ApiResponse.onSuccess(SuccessCode.USER_LOGIN_SUCCESS, jwt);
 
+        } catch (UsernameNotFoundException e) {
+            log.warn("Swagger 로그인 실패 - 존재하지 않는 아이디: {}", dto.getUserId());
+            return ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
+
+        } catch (BadCredentialsException e) {
+            log.warn("Swagger 로그인 실패 - 비밀번호 오류: {}", dto.getUserId());
+            return ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
+
         } catch (AuthenticationException e) {
-            return ApiResponse.onFailure(ErrorCode.INVALID_CREDENTIALS, null);
+            log.warn("Swagger 로그인 실패 - 기타 인증 오류: {}", e.getMessage());
+            return ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
         }
     }
 }
