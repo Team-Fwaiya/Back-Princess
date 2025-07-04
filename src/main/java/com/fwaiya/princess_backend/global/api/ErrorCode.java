@@ -1,6 +1,5 @@
 package com.fwaiya.princess_backend.global.api;
 
-import com.fwaiya.princess_backend.global.api.BaseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ public enum ErrorCode implements BaseCode { // 실패
 
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "USER_4011", "자격 증명이 유효하지 않습니다."),
 
-    PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "AUTH_4011", "비밀번호가 일치하지 않습니다."),
+    ID_PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "AUTH_4011", "아이디 또는 비밀번호가 일치하지 않습니다."),
     LOGIN_FAILED(HttpStatus.UNAUTHORIZED,"AUTH_4001", "로그인에 실패했습니다."),
 
     // Jwt

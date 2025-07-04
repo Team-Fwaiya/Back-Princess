@@ -3,10 +3,14 @@ package com.fwaiya.princess_backend.global;
 import com.fwaiya.princess_backend.login.jwt.JWTFilter;
 import com.fwaiya.princess_backend.login.jwt.JWTUtil;
 import com.fwaiya.princess_backend.login.jwt.LoginFilter;
+import com.fwaiya.princess_backend.login.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,11 +31,22 @@ import java.util.List;
 public class SecurityConfig {
     private final AuthenticationConfiguration configuration;
     private final JWTUtil jwtUtil;
+    private final CustomUserDetailsService customUserDetailsService;
+
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+//        return configuration.getAuthenticationManager();
+//    }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager() throws Exception {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(bCryptPasswordEncoder());
+        provider.setHideUserNotFoundExceptions(false); // <-- 여기!
+        return new ProviderManager(provider);
     }
+
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -72,7 +87,11 @@ public class SecurityConfig {
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         http
-                .addFilterAt(new LoginFilter(authenticationManager(configuration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                //.addFilterAt(new LoginFilter(authenticationManager(configuration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(
+                        new LoginFilter(authenticationManager(), jwtUtil),
+                        UsernamePasswordAuthenticationFilter.class
+                );
         // 세션 설정
         http
                 .sessionManagement((session)-> session

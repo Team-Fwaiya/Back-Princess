@@ -44,11 +44,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String username = customuserDetails.getUsername();
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        GrantedAuthority auth = iterator.next();
-
-        String role = auth.getAuthority();
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
 
         String token = jwtUtil.createJwt (username, role);
 
@@ -64,20 +60,19 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         ApiResponse<?> result;
 
-        if (failed instanceof BadCredentialsException) {
-            // 비밀번호 틀린 경우
-            result = ApiResponse.onFailure(ErrorCode.PASSWORD_MISMATCH, null);
-        } else if (failed instanceof UsernameNotFoundException) {
-            // 유저가 존재하지 않는 경우
-            result = ApiResponse.onFailure(ErrorCode.USER_NOT_FOUND, null);
-        } else {
-            // 그 외 실패
-            result = ApiResponse.onFailure(ErrorCode.LOGIN_FAILED, null);
-        }
+        result = ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
 
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(result));
 
-        log.info("로그인 실패 : {}", failed.getMessage());
+        // 예외 종류에 따라 로그는 다르게 출력
+        if (failed instanceof UsernameNotFoundException) {
+            log.info("로그인 실패: 존재하지 않는 아이디 - {}", failed.getMessage());
+        } else if (failed instanceof BadCredentialsException) {
+            log.info("로그인 실패: 비밀번호 오류 - {}", failed.getMessage());
+        } else {
+            log.info("로그인 실패: 기타 인증 실패 - {}", failed.getMessage());
+        }
     }
+
 }
