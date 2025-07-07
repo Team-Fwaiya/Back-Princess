@@ -4,9 +4,10 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/princess_db?useSSL=false&serverTimezone=Asia/Seoul
-    username: root
-    password: your_password
+
+    url: ${local.db.url}
+    username: ${local.db.username}
+    password: ${local.db.password}
 
   jpa:
     hibernate:
@@ -21,6 +22,9 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION}
 
 server:
   port: 8080
@@ -41,3 +45,4 @@ springdoc:
 logging:
   level:
     com.fwaiya.princess_backend: DEBUG
+
