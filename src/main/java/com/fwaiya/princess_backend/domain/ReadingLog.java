@@ -44,15 +44,7 @@ public class ReadingLog extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // 독서록 생성될 때 user의 독서록에 추가
-    public ReadingLog(User user, String OneLineReview, String content, int rating) {
-        this.user = user;
-        this.OneLineReview = OneLineReview;
-        this.content = content;
-        this.rating = rating;
 
-        user.getReadingLogs().add(this);
-    }
 
 }
 

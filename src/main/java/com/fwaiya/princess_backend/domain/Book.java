@@ -2,7 +2,6 @@ package com.fwaiya.princess_backend.domain;
 
 import com.fwaiya.princess_backend.global.BaseEntity;
 import com.fwaiya.princess_backend.global.constant.Genre;
-import com.fwaiya.princess_backend.global.constant.ReadingLevel;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,6 +34,6 @@ public class Book extends BaseEntity {
     @Column(nullable = false)
     private String hashtags;
 
-    // 책과 독서토론 연관관계 (1:N)
+    // 책과 독서토론 연관관계 (1:N) / 단방향 매핑
     // 책과 독서록 연관관계 (1:N)
 }

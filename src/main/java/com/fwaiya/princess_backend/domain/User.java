@@ -5,18 +5,18 @@ import com.fwaiya.princess_backend.global.BaseEntity;
 import com.fwaiya.princess_backend.global.constant.ReadingLevel;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.Order;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 /** * 사용자 엔티티 클래스 ** @author yaaan7 @since 2025-06-26 */
+// id, username, nickname, password, imagePath, birthDate, readingLevel
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -51,13 +51,10 @@ public class User extends BaseEntity {
     private ReadingLevel readingLevel = ReadingLevel.lower;
 
     @Column(nullable = false)
-    private int read_count = 0;
+    private int readCount = 0;
 
     // 유저와 댓글 연관관계 (1:N)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    // 부모가 삭제되면 자식 엔티티도 삭제함 -> 부모엔티티에서 관리
-    // 부모 엔티티 측에서 자식 엔티티를 제거하면 자식 엔티티 자체도 제거됨
-    // (null 처리에 관해서 따로 로직이 없으므로)
     private List<Comment> comments = new ArrayList<>();
 
     // 유저와 독서록 연관관계 (1:N)
@@ -65,4 +62,12 @@ public class User extends BaseEntity {
     private List<ReadingLog> readingLogs = new ArrayList<>();
 
     // 유저와 읽고 싶은 책 연관관계 (1:N)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WantToRead> wantToReads = new ArrayList<>();
+
+    // 다음 레벨까지 몇 권 남았는지 계산
+    public int CountUntilNextLevel(){
+        return 5 - ( readCount % 5 );
+    }
+
 }

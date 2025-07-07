@@ -31,6 +31,9 @@ public class WantToRead extends BaseEntity {
     @Column(nullable = false)
     private String memo;
 
-    // 읽고 싶은 책과 유저 연관관계
+    // 읽고 싶은 책과 유저 연관관계 (N:1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

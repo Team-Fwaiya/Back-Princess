@@ -1,9 +1,11 @@
 package com.fwaiya.princess_backend.service;
 
 import com.fwaiya.princess_backend.domain.User;
+import com.fwaiya.princess_backend.dto.response.UserInfoResponse;
 import com.fwaiya.princess_backend.global.api.ErrorCode;
 import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,16 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
-    /** userId로 사용자 정보 조회 ** @param userId *@return nickname */
-    public String getNickname(String username) {
+    /** userId로 사용자 정보 조회 ** @param userId(=username) *@return UserInfoResponse */
+    @Transactional
+    public UserInfoResponse getUserInfo(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
-        return user.getNickname();
+        return UserInfoResponse.from(user);
     }
 
     /** userId로 사용자 삭제 ** @param userId */
+    @Transactional
     public void withdraw(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));

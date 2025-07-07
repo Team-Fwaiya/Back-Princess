@@ -43,5 +43,4 @@ public class Discussion extends BaseEntity {
     private Book book;
 
     // 독서토론과 댓글 연관관계 (1:N)
-    // 독서토론 생성 될 때 책에도 추가-> 필요 없나
 }
