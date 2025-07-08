@@ -70,4 +70,8 @@ public class User extends BaseEntity {
         return 5 - ( readCount % 5 );
     }
 
+    // 프로필 사진 업데이트
+    public void updateImagePath(String newPath){
+        this.imagePath = newPath;
+    }
 }

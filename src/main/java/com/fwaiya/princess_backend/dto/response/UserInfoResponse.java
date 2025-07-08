@@ -2,7 +2,6 @@ package com.fwaiya.princess_backend.dto.response;
 
 import com.fwaiya.princess_backend.domain.ReadingLog;
 import com.fwaiya.princess_backend.domain.User;
-import com.fwaiya.princess_backend.domain.WantToRead;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -19,7 +18,8 @@ public class UserInfoResponse {
     private String readingLevel;
     private int untilNextLevel;
     private List<ReadingLog> readingLogs;
-    private List<WantToRead> wantToReads;
+    //private List<ReadingLogDto> readingLogs;
+    private List<WantCreateResponse> wantToReads;
 
     // User -> UserInfoResponse로 변환
     public static UserInfoResponse from(User user){
@@ -30,7 +30,9 @@ public class UserInfoResponse {
                 user.getReadingLevel().getKoreanName(),
                 user.CountUntilNextLevel(),
                 user.getReadingLogs(),
-                user.getWantToReads()
+                user.getWantToReads().stream()
+                        .map(WantCreateResponse::from)
+                        .toList()
         );
     }
 }

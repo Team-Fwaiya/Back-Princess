@@ -24,7 +24,11 @@ public enum ErrorCode implements BaseCode { // 실패
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JWT_4011", "Authorization 헤더가 없거나 형식이 올바르지 않습니다."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4012", "토큰 유효기간이 만료되었습니다."),
     TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_4031", "유효하지 않은 토큰입니다."),
-    TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4031", "권한 정보가 없는 토큰입니다.");
+    TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4031", "권한 정보가 없는 토큰입니다."),
+
+    // Profile
+    INVALID_PROFILE_IMAGE(HttpStatus.BAD_REQUEST, "USER_4001", "허용되지 않은 프로필 이미지입니다."),
+    WANT_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4003", "해당 읽고 싶은 책 정보를 찾을 수 없습니다.");
 
 
     private final HttpStatus httpStatus;
