@@ -1,8 +1,6 @@
 package com.fwaiya.princess_backend.login.service;
 
 import com.fwaiya.princess_backend.domain.User;
-import com.fwaiya.princess_backend.global.api.ErrorCode;
-import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

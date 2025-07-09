@@ -1,9 +1,5 @@
 package com.fwaiya.princess_backend.login.controller;
 
-import com.fwaiya.princess_backend.global.api.ApiResponse;
-import com.fwaiya.princess_backend.global.api.ErrorCode;
-import com.fwaiya.princess_backend.global.api.SuccessCode;
-import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.login.dto.JoinRequestDto;
 import com.fwaiya.princess_backend.login.dto.JoinResponseDto;
 import com.fwaiya.princess_backend.login.service.JoinService;
@@ -13,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 

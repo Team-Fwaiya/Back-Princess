@@ -1,8 +1,5 @@
 package com.fwaiya.princess_backend.login.controller;
 
-import com.fwaiya.princess_backend.global.api.ApiResponse;
-import com.fwaiya.princess_backend.global.api.ErrorCode;
-import com.fwaiya.princess_backend.global.api.SuccessCode;
 import com.fwaiya.princess_backend.login.dto.LoginRequestDto;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.login.jwt.JWTUtil;

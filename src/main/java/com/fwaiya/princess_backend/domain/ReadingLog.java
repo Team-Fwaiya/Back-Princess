@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 
 /** 독서록 엔티티 **/
 @Entity
