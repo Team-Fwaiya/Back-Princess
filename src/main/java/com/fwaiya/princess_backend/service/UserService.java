@@ -30,16 +30,14 @@ public class UserService {
     /** userId로 사용자 삭제  **/
     @Transactional
     public void withdraw(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다: " + username));
+        User user = findByUsername(username);
         userRepository.delete(user);
     }
 
     /** userId로 사용자 정보 조회 **/
     @Transactional
     public UserInfoResponse getUserInfo(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다: " + username));
+        User user = findByUsername(username);
         return UserInfoResponse.from(user);
     }
 

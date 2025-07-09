@@ -8,6 +8,8 @@ import com.fwaiya.princess_backend.global.constant.ProfileImageConstants;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +76,7 @@ public class UserController {
     @Operation(summary = "프로필 사진 변경", description = "로그인한 사용자의 프로필 사진을 8가지 중 하나로 변경합니다.")
     public ResponseEntity<Object> updateProfile(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestBody ProfileImageUpdateRequest profileImageUpdateRequest
+            @Valid @RequestBody ProfileImageUpdateRequest profileImageUpdateRequest
     ){
         User user = userService.findByUsername(customUserDetails.getUsername());
         userService.updateProfile(profileImageUpdateRequest.getImagePath(), user);
