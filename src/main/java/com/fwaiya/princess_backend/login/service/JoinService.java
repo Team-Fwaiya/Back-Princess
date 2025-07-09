@@ -30,12 +30,12 @@ public class JoinService {
 
         Boolean isExist1 = userRepository.existsByUsername(username);
         if (isExist1) {
-            throw new GeneralException(ErrorCode.ALREADY_USED_USERID);
+            throw new IllegalStateException("이미 존재하는 ID 입니다.");
         }
 
         Boolean isExist2 = userRepository.existsByNickname(nickname);
         if (isExist2) {
-            throw new GeneralException(ErrorCode.ALREADY_USED_NICKNAME);
+            throw new IllegalStateException("이미 존재하는 닉네임 입니다.");
         }
 
         User user = new User();
