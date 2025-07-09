@@ -19,7 +19,8 @@ public enum SuccessCode implements BaseCode { // 성공
     USER_INFO_GET_SUCCESS(HttpStatus.OK, "USER_2001", "회원정보 조회가 완료되었습니다."),
     USER_WANT_POST_SUCCESS(HttpStatus.OK, "USER_2002", "읽고 싶은 책 등록이 완료되었습니다."),
     USER_WANT_DELETE_SUCCESS(HttpStatus.OK, "USER_2003", "읽고 싶은 책 삭제가 완료되었습니다."),
-    USER_PROFILE_IMAGE_UPDATE_SUCCESS(HttpStatus.OK, "USER_2004", "프로필 이미지 변경이 완료되었습니다.");
+    USER_PROFILE_IMAGE_UPDATE_SUCCESS(HttpStatus.OK, "USER_2004", "프로필 이미지 변경이 완료되었습니다."),
+    USER_PROFILE_IMAGE_LIST_GET_SUCCESS(HttpStatus.OK, "USER_2005", "프로필 이미지 목록 조회 성공");
 
 
     private final HttpStatus httpStatus;

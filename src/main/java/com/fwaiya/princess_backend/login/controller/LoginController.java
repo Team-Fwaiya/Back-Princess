@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +35,7 @@ public class LoginController {
 
     @PostMapping("/swagger")
     @Operation(summary = "Swagger 전용 로그인", description = " userId, password로 JWT 토큰을 발급받습니다.")
-    public ApiResponse<String> login(@RequestBody LoginRequestDto dto) {
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto dto) {
         try {
             UsernamePasswordAuthenticationToken token =
                     new UsernamePasswordAuthenticationToken(dto.getUserId(), dto.getPassword());
@@ -44,19 +45,17 @@ public class LoginController {
 
             String jwt = jwtUtil.createJwt(userDetails.getUsername(), userDetails.getAuthorities().iterator().next().getAuthority());
 
-            return ApiResponse.onSuccess(SuccessCode.USER_LOGIN_SUCCESS, jwt);
+            return ResponseEntity.ok(jwt);
 
         } catch (UsernameNotFoundException e) {
             log.warn("Swagger 로그인 실패 - 존재하지 않는 아이디: {}", dto.getUserId());
-            return ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
-
+            return ResponseEntity.ok("아이디나 비밀번호가 일치하지 않습니다");
         } catch (BadCredentialsException e) {
             log.warn("Swagger 로그인 실패 - 비밀번호 오류: {}", dto.getUserId());
-            return ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
-
+            return ResponseEntity.ok("아이디나 비밀번호가 일치하지 않습니다");
         } catch (AuthenticationException e) {
             log.warn("Swagger 로그인 실패 - 기타 인증 오류: {}", e.getMessage());
-            return ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
+            return ResponseEntity.ok("아이디나 비밀번호가 일치하지 않습니다");
         }
     }
 }

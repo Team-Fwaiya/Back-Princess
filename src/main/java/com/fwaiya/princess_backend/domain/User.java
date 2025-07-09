@@ -65,6 +65,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WantToRead> wantToReads = new ArrayList<>();
 
+    // WantToRead와 양방향 편의 메서드
+    public void addWantToRead(WantToRead wantToRead) {
+        this.wantToReads.add(wantToRead);
+        wantToRead.setUser(this);
+    }
+
     // 다음 레벨까지 몇 권 남았는지 계산
     public int CountUntilNextLevel(){
         return 5 - ( readCount % 5 );

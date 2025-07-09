@@ -13,13 +13,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -58,9 +55,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json;charset=UTF-8");
 
-        ApiResponse<?> result;
-
+        /*ApiResponse<?> result;
         result = ApiResponse.onFailure(ErrorCode.ID_PASSWORD_MISMATCH, null);
+
 
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(result));
@@ -72,7 +69,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             log.info("로그인 실패: 비밀번호 오류 - {}", failed.getMessage());
         } else {
             log.info("로그인 실패: 기타 인증 실패 - {}", failed.getMessage());
+        }*/
+
+        String message;
+
+        if (failed instanceof UsernameNotFoundException) {
+            message = "존재하지 않는 사용자입니다.";
+        } else if (failed instanceof BadCredentialsException) {
+            message = "아이디 또는 비밀번호가 일치하지 않습니다.";
+        } else {
+            message = "로그인에 실패했습니다.";
         }
+
+        response.getWriter().write(message);
+        log.warn("로그인 실패: {}", message);
+
     }
 
 }
