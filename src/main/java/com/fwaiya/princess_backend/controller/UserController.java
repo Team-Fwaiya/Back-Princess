@@ -1,5 +1,6 @@
 package com.fwaiya.princess_backend.controller;
 
+import com.fwaiya.princess_backend.domain.User;
 import com.fwaiya.princess_backend.dto.request.ProfileImageUpdateRequest;
 import com.fwaiya.princess_backend.dto.request.WantCreateRequest;
 import com.fwaiya.princess_backend.dto.response.UserInfoResponse;
@@ -54,7 +55,8 @@ public class UserController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @Valid @RequestBody WantCreateRequest wantCreateRequest
     ){
-        userService.createWant( wantCreateRequest, customUserDetails.getUsername());
+        User user = userService.findByUsername(customUserDetails.getUsername());
+        userService.createWant( wantCreateRequest,user );
         return ResponseEntity.ok("읽고 싶은 책 등록 완료하였습니다.");
     }
 
@@ -65,7 +67,8 @@ public class UserController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long wantID
     ){
-        userService.deleteWant(wantID, customUserDetails.getUsername());
+        User user = userService.findByUsername(customUserDetails.getUsername());
+        userService.deleteWant(wantID, user);
         return ResponseEntity.ok("삭제 완료하였습니다.");
     }
 
@@ -76,7 +79,8 @@ public class UserController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody ProfileImageUpdateRequest profileImageUpdateRequest
     ){
-        userService.updateProfile( customUserDetails.getUsername(), profileImageUpdateRequest.getImagePath());
+        User user = userService.findByUsername(customUserDetails.getUsername());
+        userService.updateProfile(profileImageUpdateRequest.getImagePath(), user);
 
         return ResponseEntity.ok("프로필 사진 변경 완료하였습니다.");
     }
