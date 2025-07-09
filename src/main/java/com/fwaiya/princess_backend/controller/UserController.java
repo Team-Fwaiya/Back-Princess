@@ -8,8 +8,6 @@ import com.fwaiya.princess_backend.global.constant.ProfileImageConstants;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
