@@ -1,10 +1,7 @@
 package com.fwaiya.princess_backend.login.jwt;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fwaiya.princess_backend.domain.User;
-import com.fwaiya.princess_backend.global.api.ApiResponse;
-import com.fwaiya.princess_backend.global.api.ErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
