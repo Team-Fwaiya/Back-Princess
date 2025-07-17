@@ -17,8 +17,6 @@ public class UserInfoResponse {
     private LocalDate birthDate;
     private String readingLevel;
     private int untilNextLevel;
-    private List<ReadingLog> readingLogs;
-    //private List<ReadingLogDto> readingLogs;
     private List<WantCreateResponse> wantToReads;
 
     // User -> UserInfoResponse로 변환
@@ -29,7 +27,6 @@ public class UserInfoResponse {
                 user.getBirthDate(),
                 user.getReadingLevel().getKoreanName(),
                 user.CountUntilNextLevel(),
-                user.getReadingLogs(),
                 user.getWantToReads().stream()
                         .map(WantCreateResponse::from)
                         .toList()
