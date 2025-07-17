@@ -61,8 +61,8 @@ public class DiscussionService {
                 .description(request.getDescription())
                 .book(book)
                 .status(DiscussionStatus.ACTIVE)
-                //.endDate(LocalDateTime.now().plusWeeks(1))
-                .endDate(LocalDateTime.now().plusMinutes(1))
+                .endDate(LocalDateTime.now().plusWeeks(1))
+                //.endDate(LocalDateTime.now().plusMinutes(1))
                 .build();
 
         Discussion saved = discussionRepository.save(discussion);

@@ -1,6 +1,6 @@
 package com.fwaiya.princess_backend.global.constant;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 
 // DTO에서 한국어로 변환해서 처리
