@@ -1,13 +1,18 @@
 package com.fwaiya.princess_backend.repository;
 
 import com.fwaiya.princess_backend.domain.Book;
+import com.fwaiya.princess_backend.domain.Discussion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 // Book 엔티티에 대한 DB 접근을 담당하는 JPA Repository 인터페이스
 // JpaRepository<Book, Long>을 상속받아 기본 CRUD 기능을 자동으로 제공
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+
+    Optional<Book> findByTitle(String title);
 
     // 기본적으로 다음과 같은 메서드를 자동으로 제공함:
     // - findAll() : 전체 목록 조회

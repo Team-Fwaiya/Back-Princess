@@ -14,8 +14,8 @@ import com.fwaiya.princess_backend.domain.entity.BaseEntity; // createdAt, updat
 public class Book extends BaseEntity {
 
     @Id // 기본 키(PK) 설정
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment 방식 사용
-    @Column(name = "book_id") // DB 컬럼명 지정
     private Long id;
 
     @Column(nullable = false, length = 200) // null 허용하지 않으며, 최대 길이 200자로 제한

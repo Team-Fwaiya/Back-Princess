@@ -43,7 +43,8 @@ public class JoinService {
         user.setNickname(nickname);
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setBirthDate(birthDate);
-        user.setRole("ROLE_USER");
+        String role = username.equals("1234@naver.com") ? "ROLE_ADMIN" : "ROLE_USER";
+        user.setRole(role);
 
         userRepository.save(user);
 

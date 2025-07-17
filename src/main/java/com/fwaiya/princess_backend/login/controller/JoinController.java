@@ -21,17 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class JoinController {
     private final JoinService joinService;
 
-    @Operation(summary="회원가입", description = "사용자 정보를 받아 회원가입을 진행합니다.")
+    @Operation(summary = "회원가입", description = "사용자 정보를 받아 회원가입을 진행합니다.")
     @PostMapping("/join")
     public ResponseEntity<String> joinProcess(JoinRequestDto joinRequestDto) {
-            JoinResponseDto response = joinService.joinProcess(joinRequestDto);
-            return ResponseEntity.ok("회원 가입을 성공하였습니다");
+        JoinResponseDto response = joinService.joinProcess(joinRequestDto);
+        return ResponseEntity.ok("회원 가입을 성공하였습니다");
     }
-//        } catch (GeneralException e) {
-//            log.error("회원가입 중 예외 발생: {}", e.getReason().getMessage());
-//            throw e;
-//        } catch (Exception e){
-//            log.error("알 수 없는 예외 발생: {}", e.getMessage());
-//            throw new GeneralException(ErrorCode.INTERNAL_SERVER_ERROR);
-//        }
 }

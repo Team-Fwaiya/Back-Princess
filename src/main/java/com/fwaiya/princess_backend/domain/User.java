@@ -4,7 +4,6 @@ package com.fwaiya.princess_backend.domain;
 import com.fwaiya.princess_backend.global.BaseEntity;
 import com.fwaiya.princess_backend.global.constant.ReadingLevel;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.Order;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -53,9 +52,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private int readCount = 0;
 
-    // 유저와 댓글 연관관계 (1:N)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    // 유저와 댓글 연관관계 (1:N) - 관리할 필요 x
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> comments = new ArrayList<>();
 
     // 유저와 독서록 연관관계 (1:N)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
