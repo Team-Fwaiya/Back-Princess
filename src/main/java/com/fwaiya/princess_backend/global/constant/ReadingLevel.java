@@ -22,4 +22,14 @@ public enum ReadingLevel {
     public String getKoreanName() {
         return koreanName;
     }
+
+    public ReadingLevel nextLevel() {
+        return switch (this) {
+            case lower -> commoner;
+            case commoner -> merchant;
+            case merchant -> aristocrat;
+            case aristocrat -> princess;
+            case princess -> princess; // 최종 레벨
+        };
+    }
 }

@@ -31,7 +31,6 @@ public class ReadingLogService {
         Book book=bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("책을 찾을 수 없습니다."));
 
-
         ReadingLog readingLog = new ReadingLog();
         readingLog.setUser(user);
         readingLog.setBook(book);
@@ -40,6 +39,8 @@ public class ReadingLogService {
         readingLog.setRating(request.getRating());
 
         readingLogRepository.save(readingLog);
+
+        user.updateReadCountAndReadingLevel();
     }
 
     /** 내 독서록 목록 조회 기능 **/

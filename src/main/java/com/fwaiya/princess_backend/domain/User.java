@@ -79,4 +79,14 @@ public class User extends BaseEntity {
     public void updateImagePath(String newPath){
         this.imagePath = newPath;
     }
+
+    // 독서록 개수 추가
+    public void updateReadCountAndReadingLevel(){
+        this.readCount++;
+
+        // 5권 단위로 리딩레벨 업!
+        if (this.readCount % 5 == 0) {
+            this.readingLevel = this.readingLevel.nextLevel(); // enum 로직
+        }
+    }
 }
