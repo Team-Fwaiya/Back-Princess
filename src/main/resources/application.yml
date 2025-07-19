@@ -1,13 +1,9 @@
 spring:
-  profiles:
-    active: dev
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-    url: ${local.db.url}
-    username: ${local.db.username}
-    password: ${local.db.password}
+    url: jdbc:mysql://princess123.cb0kqmucctkl.ap-northeast-2.rds.amazonaws.com:3306/princess_db?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8
+    username: admin
+    password: princess123!
 
   jpa:
     hibernate:
@@ -16,18 +12,20 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-  jwt:
-    secret: ${JWT_SECRET}
-    expiration: ${JWT_EXPIRATION}
 
 server:
   port: 8080
+
+# JWT 설정
+jwt:
+  secret: mySecretKeyForDevelopment123456789
+  expiration: 86400000
 
 # Swagger 설정
 springdoc:
@@ -45,4 +43,3 @@ springdoc:
 logging:
   level:
     com.fwaiya.princess_backend: DEBUG
-
