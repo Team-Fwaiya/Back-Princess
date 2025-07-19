@@ -19,13 +19,26 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+  # JWT 설정 (JWTUtil에서 spring.jwt.* 형태로 참조)
+  jwt:
+    secret: mySecretKeyForDevelopment123456789
+    expiration: 86400000
+
 server:
   port: 8080
 
-# JWT 설정
+# JWT 설정 (기존 형태도 유지)
 jwt:
   secret: mySecretKeyForDevelopment123456789
   expiration: 86400000
+
+# AWS 설정 (환경변수 사용)
+aws:
+  access-key: ${AWS_ACCESS_KEY:your-access-key-here}
+  secret-key: ${AWS_SECRET_KEY:your-secret-key-here}
+  region: ${AWS_REGION:ap-northeast-2}
+  s3:
+    bucket: ${AWS_S3_BUCKET:princess-app-images}
 
 # Swagger 설정
 springdoc:
