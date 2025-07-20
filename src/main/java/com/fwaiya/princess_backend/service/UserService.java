@@ -4,7 +4,9 @@ import com.fwaiya.princess_backend.domain.User;
 import com.fwaiya.princess_backend.domain.WantToRead;
 import com.fwaiya.princess_backend.dto.request.WantCreateRequest;
 import com.fwaiya.princess_backend.dto.response.UserInfoResponse;
+import com.fwaiya.princess_backend.global.api.ErrorCode;
 import com.fwaiya.princess_backend.global.constant.ProfileImageConstants;
+import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.repository.UserRepository;
 import com.fwaiya.princess_backend.repository.WantToReadRepository;
 import jakarta.transaction.Transactional;
@@ -23,12 +25,12 @@ public class UserService {
     // username 으로 사용자가 존재하는지 확인
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다: " + username));
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
     }
 
     public void existByUsername(String username) {
         if (!userRepository.existsByUsername(username)) {
-            throw new IllegalArgumentException("존재하지 않는 사용자입니다: " + username);
+            throw new GeneralException(ErrorCode.USER_NOT_FOUND);
         }
     }
 
@@ -66,8 +68,7 @@ public class UserService {
     public void deleteWant(Long wantId, User user){
         // 사용자 소유의 wantId가 맞는지 확인
         WantToRead wantToRead = wantToReadRepository.findByIdAndUserId(wantId, user.getId())
-                .orElseThrow(() -> new IllegalArgumentException("삭제할 책이 존재하지 않거나 권한이 없습니다. ID:  " + wantId));
-
+                .orElseThrow(() -> new GeneralException(ErrorCode.WANT_BOOK_NOT_FOUND_OR_UNAUTHORIZED));
         wantToReadRepository.delete(wantToRead);
     }
 
@@ -76,7 +77,7 @@ public class UserService {
     public void updateProfile(String imagePath, User user) {
         // imagePath가 고정 이미지 리스트에 포함되는지 검증
         if (!ProfileImageConstants.FIXED_IMAGES.contains(imagePath)) {
-            throw new IllegalArgumentException("허용되지 않은 프로필 이미지입니다.");
+            throw new GeneralException(ErrorCode.INVALID_PROFILE_IMAGE);
         }
         user.updateImagePath(imagePath);
     }

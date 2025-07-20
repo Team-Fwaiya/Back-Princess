@@ -5,6 +5,8 @@ import com.fwaiya.princess_backend.domain.ReadingLog;
 import com.fwaiya.princess_backend.domain.User;
 import com.fwaiya.princess_backend.dto.request.ReadingLogRequest;
 import com.fwaiya.princess_backend.dto.response.ReadingLogResponse;
+import com.fwaiya.princess_backend.global.api.ErrorCode;
+import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.repository.BookRepository;
 import com.fwaiya.princess_backend.repository.ReadingLogRepository;
@@ -27,9 +29,11 @@ public class ReadingLogService {
     @Transactional
     public void createReadingLog(ReadingLogRequest request, CustomUserDetails customUserDetails) {
         User user = userRepository.findByUsername(customUserDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                //.orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
         Book book=bookRepository.findById(request.getBookId())
-                .orElseThrow(() -> new IllegalArgumentException("책을 찾을 수 없습니다."));
+                //.orElseThrow(() -> new IllegalArgumentException("책을 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorCode.BOOK_NOT_FOUND));
 
         ReadingLog readingLog = new ReadingLog();
         readingLog.setUser(user);
@@ -47,7 +51,9 @@ public class ReadingLogService {
     @Transactional
     public List<ReadingLogResponse> getMyReadingLogs(CustomUserDetails customUserDetails) {
         User user = userRepository.findByUsername(customUserDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                //.orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
+
         List<ReadingLog> logs = readingLogRepository.findByUserId(user.getId());
         return logs.stream().map(ReadingLogResponse::from).collect(Collectors.toList());
     }
@@ -56,11 +62,14 @@ public class ReadingLogService {
     @Transactional
     public ReadingLogResponse getReadingLogById(Long readingLogId, CustomUserDetails customUserDetails) {
         User user = userRepository.findByUsername(customUserDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                //.orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
+
         ReadingLog log = readingLogRepository.findById(readingLogId).orElseThrow();
 
         if (!log.getUser().getId().equals(user.getId())) {
-            throw new SecurityException("본인의 독서록만 조회 가능합니다.");
+            //throw new SecurityException("본인의 독서록만 조회 가능합니다.");
+            throw new GeneralException(ErrorCode.UNAUTHORIZED_READING_LOG_ACCESS);
         }
 
         return ReadingLogResponse.from(log);
@@ -70,11 +79,14 @@ public class ReadingLogService {
     @Transactional
     public void updateReadingLog(Long readingLogId, ReadingLogRequest request, CustomUserDetails customUserDetails) {
         User user = userRepository.findByUsername(customUserDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                //.orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
+
         ReadingLog log = readingLogRepository.findById(readingLogId).orElseThrow();
 
         if (!log.getUser().getId().equals(user.getId())) {
-            throw new SecurityException("본인의 독서록만 수정 가능합니다.");
+           // throw new SecurityException("본인의 독서록만 수정 가능합니다.");
+            throw new GeneralException(ErrorCode.UNAUTHORIZED_READING_LOG_UPDATE);
         }
 
         log.setOneLineReview(request.getOneLineReview());
@@ -86,11 +98,14 @@ public class ReadingLogService {
     @Transactional
     public void deleteReadingLog(Long readingLogId, CustomUserDetails customUserDetails) {
         User user = userRepository.findByUsername(customUserDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                //.orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
+
         ReadingLog log = readingLogRepository.findById(readingLogId).orElseThrow();
 
         if (!log.getUser().getId().equals(user.getId())) {
-            throw new SecurityException("본인의 독서록만 삭제 가능합니다.");
+            //throw new SecurityException("본인의 독서록만 삭제 가능합니다.");
+            throw new GeneralException(ErrorCode.UNAUTHORIZED_READING_LOG_DELETE);
         }
 
         readingLogRepository.delete(log);

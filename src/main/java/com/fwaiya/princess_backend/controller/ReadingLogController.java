@@ -2,12 +2,13 @@ package com.fwaiya.princess_backend.controller;
 
 import com.fwaiya.princess_backend.dto.request.ReadingLogRequest;
 import com.fwaiya.princess_backend.dto.response.ReadingLogResponse;
+import com.fwaiya.princess_backend.global.api.ApiResponse;
+import com.fwaiya.princess_backend.global.api.SuccessCode;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.service.ReadingLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,12 +34,13 @@ public class ReadingLogController {
      */
     @PostMapping
     @Operation(summary = "독서록 등록", description = "로그인한 사용자가 독서록을 작성합니다.")
-    public ResponseEntity<Object> createReadingLog(
+    public ApiResponse<String> createReadingLog(
             @RequestBody ReadingLogRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         readingLogService.createReadingLog(request, customUserDetails);
-        return ResponseEntity.ok("독서록 등록을 완료하였습니다.");
+        //return ResponseEntity.ok("독서록 등록을 완료하였습니다.");
+        return ApiResponse.onSuccess(SuccessCode.READING_LOG_CREATE_SUCCESS, "True");
     }
 
     /**
@@ -47,11 +49,12 @@ public class ReadingLogController {
      */
     @GetMapping("/my")
     @Operation(summary = "내 독서록 목록 조회", description = "로그인한 사용자의 독서록 목록을 조회합니다.")
-    public ResponseEntity<List<ReadingLogResponse>> getMyReadingLogs(
+    public ApiResponse<List<ReadingLogResponse>> getMyReadingLogs(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         List<ReadingLogResponse> response = readingLogService.getMyReadingLogs(customUserDetails);
-        return ResponseEntity.ok(response);
+        //return ResponseEntity.ok(response);
+        return ApiResponse.onSuccess(SuccessCode.READING_LOG_LIST_GET_SUCCESS, response);
     }
 
     /**
@@ -61,12 +64,13 @@ public class ReadingLogController {
      */
     @GetMapping("/{readingLogId}")
     @Operation(summary = "내 독서록 상세 조회", description = "내가 작성한 단일 독서록을 조회합니다.")
-    public ResponseEntity<ReadingLogResponse> getReadingLogById(
+    public ApiResponse<ReadingLogResponse> getReadingLogById(
             @PathVariable Long readingLogId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         ReadingLogResponse response = readingLogService.getReadingLogById(readingLogId, customUserDetails);
-        return ResponseEntity.ok(response);
+        //return ResponseEntity.ok(response);
+        return ApiResponse.onSuccess(SuccessCode.READING_LOG_DETAIL_GET_SUCCESS, response);
     }
 
     /**
@@ -75,13 +79,13 @@ public class ReadingLogController {
      */
     @PutMapping("/{readingLogId}")
     @Operation(summary = "독서록 수정", description = "로그인한 사용자가 작성한 독서록을 수정합니다.")
-    public ResponseEntity<Object> updateReadingLog(
+    public ApiResponse<String> updateReadingLog(
             @PathVariable Long readingLogId,
             @RequestBody ReadingLogRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         readingLogService.updateReadingLog(readingLogId, request, customUserDetails);
-        return ResponseEntity.ok("독서록 수정을 완료하였습니다.");
+        return ApiResponse.onSuccess(SuccessCode.READING_LOG_UPDATE_SUCCESS, "True");
     }
 
     /**
@@ -90,12 +94,13 @@ public class ReadingLogController {
      */
     @DeleteMapping("/{readingLogId}")
     @Operation(summary = "독서록 삭제", description = "로그인한 사용자가 작성한 독서록을 삭제합니다.")
-    public ResponseEntity<Object> deleteReadingLog(
+    public ApiResponse<String> deleteReadingLog(
             @PathVariable Long readingLogId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         readingLogService.deleteReadingLog(readingLogId, customUserDetails);
-        return ResponseEntity.ok("독서록 삭제를 완료하였습니다.");
+        //return ResponseEntity.ok("독서록 삭제를 완료하였습니다.");
+        return ApiResponse.onSuccess(SuccessCode.READING_LOG_DELETE_SUCCESS, "True");
     }
 
 

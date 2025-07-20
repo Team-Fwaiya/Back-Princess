@@ -16,6 +16,10 @@ public enum ErrorCode implements BaseCode { // 실패
     ALREADY_USED_USERID(HttpStatus.FORBIDDEN, "USER_4032", "이미 사용 중인 아이디 입니다."),
 
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "USER_4011", "자격 증명이 유효하지 않습니다."),
+    UNAUTHORIZED_READING_LOG_ACCESS(HttpStatus.FORBIDDEN, "READING_4003", "본인의 독서록만 조회할 수 있습니다."),
+    UNAUTHORIZED_READING_LOG_UPDATE(HttpStatus.FORBIDDEN, "READING_4004", "본인의 독서록만 수정할 수 있습니다."),
+    UNAUTHORIZED_READING_LOG_DELETE(HttpStatus.FORBIDDEN, "READING_4005", "본인의 독서록만 삭제할 수 있습니다."),
+
 
     ID_PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "AUTH_4011", "아이디 또는 비밀번호가 일치하지 않습니다."),
     LOGIN_FAILED(HttpStatus.UNAUTHORIZED,"AUTH_4001", "로그인에 실패했습니다."),
@@ -33,7 +37,19 @@ public enum ErrorCode implements BaseCode { // 실패
     INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "FILE_4001", "지원하지 않는 파일 형식입니다."),
     FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "FILE_4002", "파일 크기가 제한을 초과했습니다. (최대 5MB)"),
 
-    WANT_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4003", "해당 읽고 싶은 책 정보를 찾을 수 없습니다.");
+    // Book
+    BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOK_4001", "해당 책 정보를 찾을 수 없습니다."),
+    BOOK_TITLE_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOK_4002", "해당 제목의 책이 존재하지 않습니다."),
+
+    // Discussion
+    DISCUSSION_NOT_FOUND(HttpStatus.NOT_FOUND, "DISCUSSION_4001", "활성화된 토론방이 존재하지 않습니다."),
+
+    // Quote
+    QUOTE_FETCH_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "QUOTE_5001", "명언을 불러오는 데 실패했습니다."),
+
+    // User_Want
+    WANT_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4003", "해당 읽고 싶은 책 정보를 찾을 수 없습니다."),
+    WANT_BOOK_NOT_FOUND_OR_UNAUTHORIZED(HttpStatus.NOT_FOUND, "USER_4004", "삭제할 책이 존재하지 않거나 권한이 없습니다.");
 
 
     private final HttpStatus httpStatus;

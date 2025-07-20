@@ -2,6 +2,8 @@ package com.fwaiya.princess_backend.service;
 
 import com.fwaiya.princess_backend.domain.Book;
 import com.fwaiya.princess_backend.dto.BookDto;
+import com.fwaiya.princess_backend.global.api.ErrorCode;
+import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,8 @@ public class BookService {
     // 있으면 DTO로 변환 후 반환
     public BookDto getBook(Long id) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다. ID: " + id));
+                //.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다. ID: " + id));
+                .orElseThrow(() -> new GeneralException(ErrorCode.BOOK_NOT_FOUND));
         return BookDto.fromEntity(book);
     }
 
@@ -50,7 +53,8 @@ public class BookService {
     // 기존 데이터를 조회한 뒤, 전달된 값을 기반으로 새 Book 객체를 만듦
     public Book updateBook(Long id, BookDto dto) {
         Book original = bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다. ID: " + id));
+                //.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다. ID: " + id));
+                .orElseThrow(() -> new GeneralException(ErrorCode.BOOK_NOT_FOUND));
 
         Book updated = Book.builder()
                 .id(original.getId()) // ID는 유지
@@ -70,7 +74,8 @@ public class BookService {
     // 존재하면 삭제
     public void deleteBook(Long id) {
         if (!bookRepository.existsById(id)) {
-            throw new IllegalArgumentException("삭제할 책이 존재하지 않습니다. ID: " + id);
+            //throw new IllegalArgumentException("삭제할 책이 존재하지 않습니다. ID: " + id);
+            throw new GeneralException(ErrorCode.BOOK_NOT_FOUND);
         }
         bookRepository.deleteById(id);
     }

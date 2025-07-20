@@ -5,6 +5,7 @@ import com.fwaiya.princess_backend.domain.Discussion;
 import com.fwaiya.princess_backend.dto.request.DiscussionCreateRequest;
 import com.fwaiya.princess_backend.dto.response.DiscussionResponse;
 import com.fwaiya.princess_backend.global.BaseEntity;
+import com.fwaiya.princess_backend.global.api.ErrorCode;
 import com.fwaiya.princess_backend.global.constant.DiscussionStatus;
 import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.repository.BookRepository;
@@ -27,7 +28,7 @@ public class DiscussionService {
 
     public Discussion getActiveDiscussion(Long discussionId){
         return discussionRepository.findByIdAndStatus(discussionId, DiscussionStatus.ACTIVE)
-                .orElseThrow(() -> new IllegalArgumentException("활성화된 토론방이 존재하지 않습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorCode.DISCUSSION_NOT_FOUND));
     }
 
     /** 토론방 전체 조회 **/
@@ -54,7 +55,8 @@ public class DiscussionService {
     public DiscussionResponse createDiscussion(DiscussionCreateRequest request) {
         // 책 제목 조회
         Book book = bookRepository.findByTitle(request.getBookTitle())
-                .orElseThrow(() -> new IllegalArgumentException("해당 제목의 책이 존재하지 않습니다: " + request.getBookTitle()));
+                //.orElseThrow(() -> new IllegalArgumentException("해당 제목의 책이 존재하지 않습니다: " + request.getBookTitle()));
+                .orElseThrow(() -> new GeneralException(ErrorCode.BOOK_TITLE_NOT_FOUND));
 
         Discussion discussion = Discussion.builder()
                 .title(request.getTitle())
