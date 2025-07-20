@@ -17,8 +17,8 @@ public class JWTUtil {
     private final Long expiredMs;
 
     public JWTUtil(
-            @Value("${spring.jwt.secret}") String secret,
-            @Value("${spring.jwt.expiration}") Long expiredMs
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") Long expiredMs
     ) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
         this.expiredMs = expiredMs;

@@ -33,6 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
+
         // 인증 안된 사용자면 중단
         if ( authorization == null || !authorization.startsWith("Bearer ")) {
             System.out.println("token null : 인증이 안된 사용자입니다.");
