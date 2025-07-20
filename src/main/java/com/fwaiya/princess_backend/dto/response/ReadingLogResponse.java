@@ -38,7 +38,7 @@ public class ReadingLogResponse {
                 readingLog.getRating(),
                 readingLog.getBook().getTitle(),
                 readingLog.getBook().getAuthor(),
-                readingLog.getBook().getGenre(),
+                readingLog.getBook().getGenre().name(),
                 readingLog.getBook().getHashtags(),
                 readingLog.getBook().getCoverImageUrl(),
                 readingLog.getCreatedAt()
