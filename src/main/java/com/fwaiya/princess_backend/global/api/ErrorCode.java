@@ -26,8 +26,13 @@ public enum ErrorCode implements BaseCode { // 실패
     TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_4031", "유효하지 않은 토큰입니다."),
     TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4031", "권한 정보가 없는 토큰입니다."),
 
-    // Profile
-    INVALID_PROFILE_IMAGE(HttpStatus.BAD_REQUEST, "USER_4001", "허용되지 않은 프로필 이미지입니다."),
+    // Profile & S3
+    INVALID_PROFILE_IMAGE(HttpStatus.BAD_REQUEST, "USER_4001", "허용되지 않은 이미지 파일입니다. (jpg, png, gif 형식, 5MB 이하만 가능)"),
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FILE_5001", "파일 업로드에 실패했습니다."),
+    FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FILE_5002", "파일 삭제에 실패했습니다."),
+    INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "FILE_4001", "지원하지 않는 파일 형식입니다."),
+    FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "FILE_4002", "파일 크기가 제한을 초과했습니다. (최대 5MB)"),
+
     WANT_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4003", "해당 읽고 싶은 책 정보를 찾을 수 없습니다.");
 
 
