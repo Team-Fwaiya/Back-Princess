@@ -55,7 +55,6 @@ public class UserService {
         wantToRead.setBookTitle(request.getBookTitle());
         wantToRead.setAuthor(request.getAuthor());
         wantToRead.setGenre(request.getGenre());
-        wantToRead.setMemo(request.getMemo());
 
         user.addWantToRead(wantToRead);
 

@@ -19,7 +19,4 @@ public class WantCreateRequest {
 
     @NotBlank(message = "장르는 필수입니다.")
     private String genre;
-
-    @NotBlank(message = "메모는 필수입니다.")
-    private String memo;
 }
