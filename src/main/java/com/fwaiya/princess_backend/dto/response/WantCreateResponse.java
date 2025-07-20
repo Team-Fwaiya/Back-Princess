@@ -16,7 +16,6 @@ public class WantCreateResponse {
     private String bookTitle;
     private String author;
     private String genre;
-    private String memo;
 
     // DTO로 변환
     public static WantCreateResponse from(WantToRead wantToRead) {
@@ -24,8 +23,7 @@ public class WantCreateResponse {
                 wantToRead.getId(),
                 wantToRead.getBookTitle(),
                 wantToRead.getAuthor(),
-                wantToRead.getGenre(),
-                wantToRead.getMemo()
+                wantToRead.getGenre()
         );
     }
 

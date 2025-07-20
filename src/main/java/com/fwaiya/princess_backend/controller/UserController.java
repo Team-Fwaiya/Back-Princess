@@ -4,6 +4,8 @@ import com.fwaiya.princess_backend.domain.User;
 import com.fwaiya.princess_backend.dto.request.ProfileImageUpdateRequest;
 import com.fwaiya.princess_backend.dto.request.WantCreateRequest;
 import com.fwaiya.princess_backend.dto.response.UserInfoResponse;
+import com.fwaiya.princess_backend.global.api.ApiResponse;
+import com.fwaiya.princess_backend.global.api.SuccessCode;
 import com.fwaiya.princess_backend.global.constant.ProfileImageConstants;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
 import com.fwaiya.princess_backend.service.UserService;
@@ -11,7 +13,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,67 +26,68 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    /** *회원탈퇴* *@param username(=userId)*/
+    /**
+     * 회원탈퇴* *@param username(=userId)
+     */
     @DeleteMapping("/withdraw")
     @Operation(summary = "회원탈퇴", description = "로그인한 사용자의 회원탈퇴를 진행합니다.")
-    public ResponseEntity<Object> withdraw(
+    public ApiResponse<Object> withdraw(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
-    ){
+    ) {
         userService.withdraw(customUserDetails.getUsername());
-        return ResponseEntity.ok("회원 탈퇴 완료하였습니다");
+        return ApiResponse.onSuccess(SuccessCode.USER_DELETE_SUCCESS, "True");
     }
 
     /** *사용자 정보 조회*/
     @GetMapping("/me")
     @Operation(summary = "사용자 정보 조회", description = "로그인한 사용자의 정보를 조회합니다.")
-    public ResponseEntity<UserInfoResponse> getUserInfo(
+    public ApiResponse<UserInfoResponse> getUserInfo(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         UserInfoResponse userInfoResponse = userService.getUserInfo(customUserDetails.getUsername());
-        return ResponseEntity.ok(userInfoResponse);
+        return ApiResponse.onSuccess(SuccessCode.USER_INFO_GET_SUCCESS, userInfoResponse);
     }
 
     /** 읽고 싶은 책 등록 **/
     @PostMapping("/want")
     @Operation(summary = "읽고 싶은 책 등록", description = "로그인한 사용자가 읽고 싶은 책을 등록합니다.")
-    public ResponseEntity<String> createWant(
+    public ApiResponse<String> createWant(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @Valid @RequestBody WantCreateRequest wantCreateRequest
     ){
         User user = userService.findByUsername(customUserDetails.getUsername());
         userService.createWant( wantCreateRequest,user );
-        return ResponseEntity.ok("읽고 싶은 책 등록 완료하였습니다.");
+        return ApiResponse.onSuccess(SuccessCode.USER_WANT_POST_SUCCESS, "True");
     }
 
     /** 읽고 싶은 책 삭제 **/
     @DeleteMapping("/want/{wantID}")
     @Operation(summary = "읽고 싶은 책 삭제", description = "로그인한 사용자의 특정 읽고 싶은 책을 삭제합니다.")
-    public ResponseEntity<Object> deleteWant(
+    public ApiResponse<String> deleteWant(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long wantID
     ){
         User user = userService.findByUsername(customUserDetails.getUsername());
         userService.deleteWant(wantID, user);
-        return ResponseEntity.ok("삭제 완료하였습니다.");
+        return ApiResponse.onSuccess(SuccessCode.USER_WANT_DELETE_SUCCESS, "True");
     }
 
     /** 프로필 사진 수정**/
     @PatchMapping("/profile")
     @Operation(summary = "프로필 사진 변경", description = "로그인한 사용자의 프로필 사진을 8가지 중 하나로 변경합니다.")
-    public ResponseEntity<Object> updateProfile(
+    public ApiResponse<String> updateProfile(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @Valid @RequestBody ProfileImageUpdateRequest profileImageUpdateRequest
     ){
         User user = userService.findByUsername(customUserDetails.getUsername());
         userService.updateProfile(profileImageUpdateRequest.getImagePath(), user);
-
-        return ResponseEntity.ok("프로필 사진 변경 완료하였습니다.");
+        return ApiResponse.onSuccess(SuccessCode.USER_PROFILE_IMAGE_UPDATE_SUCCESS, "True");
     }
 
     /** 프로필 사진 목록 조회 **/
     @GetMapping("/profiles")
     @Operation(summary = "프로필 사진 목록 조회", description="고정된 8개의 프로필 사진 목록을 반환합니다.")
-    public ResponseEntity<List<String>> getProfiles(){
-        return ResponseEntity.ok(ProfileImageConstants.FIXED_IMAGES);
+    public ApiResponse<List<String>> getProfiles(){
+         return ApiResponse.onSuccess(SuccessCode.USER_PROFILE_IMAGE_LIST_GET_SUCCESS, ProfileImageConstants.FIXED_IMAGES);
     }
 }
