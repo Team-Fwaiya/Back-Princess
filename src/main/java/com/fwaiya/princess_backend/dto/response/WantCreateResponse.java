@@ -1,6 +1,7 @@
 package com.fwaiya.princess_backend.dto.response;
 
 import com.fwaiya.princess_backend.domain.WantToRead;
+import com.fwaiya.princess_backend.global.constant.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class WantCreateResponse {
     private Long id;
     private String bookTitle;
     private String author;
-    private String genre;
+    private Genre genre;
 
     // DTO로 변환
     public static WantCreateResponse from(WantToRead wantToRead) {
