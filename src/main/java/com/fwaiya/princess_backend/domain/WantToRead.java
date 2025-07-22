@@ -1,6 +1,7 @@
 package com.fwaiya.princess_backend.domain;
 
 import com.fwaiya.princess_backend.global.BaseEntity;
+import com.fwaiya.princess_backend.global.constant.Genre;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,8 +25,9 @@ public class WantToRead extends BaseEntity {
     @Column(nullable = false)
     private String author;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String genre;
+    private Genre genre;
 
     // 읽고 싶은 책과 유저 연관관계 (N:1)
     @ManyToOne(fetch = FetchType.LAZY)

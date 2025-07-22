@@ -1,5 +1,6 @@
 package com.fwaiya.princess_backend.dto.request;
 
+import com.fwaiya.princess_backend.global.constant.Genre;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,5 +19,5 @@ public class WantCreateRequest {
     private String author;
 
     @NotBlank(message = "장르는 필수입니다.")
-    private String genre;
+    private Genre genre;
 }
