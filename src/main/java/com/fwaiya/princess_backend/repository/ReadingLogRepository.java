@@ -7,17 +7,16 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * ReadingLogRepository
- * 독서록 데이터를 관리하는 JPA Repository 인터페이스
+ * [ReadingLogRepository]
+ * 독서록(ReadingLog) 엔티티에 대한 DB 접근을 담당하는 JPA Repository
+ * 기본 CRUD 외에도 사용자 정의 조회 메서드 추가
  */
 @Repository
 public interface ReadingLogRepository extends JpaRepository<ReadingLog, Long> {
 
     /**
-     * 특정 사용자 ID로 독서록 목록 조회
-     * @param userId 사용자 ID
-     * @return 독서록 리스트
+     * 특정 사용자 ID 기준으로 작성한 독서록 전체 목록 조회
+     * - 내 독서록 리스트 조회 용도
      */
     List<ReadingLog> findByUserId(Long userId);
-
 }

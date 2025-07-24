@@ -29,8 +29,8 @@ public class ReadingLogController {
 
     /**
      * 독서록 등록
-     * - 로그인한 사용자가 새로운 독서록을 작성합니다.
-     * - 요청 본문으로 ReadingLogRequest를 받습니다.
+     * - 로그인한 사용자 -> 새로운 독서록 작성
+     * - 요청 본문: ReadingLogRequest
      */
     @PostMapping
     @Operation(summary = "독서록 등록", description = "로그인한 사용자가 독서록을 작성합니다.")
@@ -39,13 +39,12 @@ public class ReadingLogController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         readingLogService.createReadingLog(request, customUserDetails);
-        //return ResponseEntity.ok("독서록 등록을 완료하였습니다.");
         return ApiResponse.onSuccess(SuccessCode.READING_LOG_CREATE_SUCCESS, "True");
     }
 
     /**
      * 내 독서록 목록 조회
-     * - 로그인한 사용자가 작성한 모든 독서록을 조회합니다.
+     * - 로그인한 사용자가 작성한 모든 독서록 조회
      */
     @GetMapping("/my")
     @Operation(summary = "내 독서록 목록 조회", description = "로그인한 사용자의 독서록 목록을 조회합니다.")
@@ -53,14 +52,13 @@ public class ReadingLogController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         List<ReadingLogResponse> response = readingLogService.getMyReadingLogs(customUserDetails);
-        //return ResponseEntity.ok(response);
         return ApiResponse.onSuccess(SuccessCode.READING_LOG_LIST_GET_SUCCESS, response);
     }
 
     /**
      * 독서록 상세 조회
-     * - 로그인한 사용자가 작성한 단일 독서록을 조회합니다.
-     * - 다른 사용자의 독서록은 조회할 수 없습니다.
+     * - 로그인한 사용자가 작성한 단일 독서록 조회
+     * - 다른 사용자의 독서록은 조회 불가
      */
     @GetMapping("/{readingLogId}")
     @Operation(summary = "내 독서록 상세 조회", description = "내가 작성한 단일 독서록을 조회합니다.")
@@ -69,13 +67,11 @@ public class ReadingLogController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         ReadingLogResponse response = readingLogService.getReadingLogById(readingLogId, customUserDetails);
-        //return ResponseEntity.ok(response);
         return ApiResponse.onSuccess(SuccessCode.READING_LOG_DETAIL_GET_SUCCESS, response);
     }
 
     /**
      * 독서록 수정
-     * - 로그인한 사용자가 작성한 독서록을 수정합니다.
      */
     @PutMapping("/{readingLogId}")
     @Operation(summary = "독서록 수정", description = "로그인한 사용자가 작성한 독서록을 수정합니다.")
@@ -90,7 +86,7 @@ public class ReadingLogController {
 
     /**
      * 독서록 삭제
-     * - 로그인한 사용자가 작성한 독서록을 삭제합니다.
+     * - 로그인한 사용자가 작성한 독서록 삭제
      */
     @DeleteMapping("/{readingLogId}")
     @Operation(summary = "독서록 삭제", description = "로그인한 사용자가 작성한 독서록을 삭제합니다.")
@@ -99,7 +95,6 @@ public class ReadingLogController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         readingLogService.deleteReadingLog(readingLogId, customUserDetails);
-        //return ResponseEntity.ok("독서록 삭제를 완료하였습니다.");
         return ApiResponse.onSuccess(SuccessCode.READING_LOG_DELETE_SUCCESS, "True");
     }
 

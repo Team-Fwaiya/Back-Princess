@@ -1,24 +1,23 @@
 package com.fwaiya.princess_backend.repository;
 
 import com.fwaiya.princess_backend.domain.Book;
-import com.fwaiya.princess_backend.domain.Discussion;
+import com.fwaiya.princess_backend.global.constant.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-// Book 엔티티에 대한 DB 접근을 담당하는 JPA Repository 인터페이스
-// JpaRepository<Book, Long>을 상속받아 기본 CRUD 기능을 자동으로 제공
+/**
+ * BookRepository
+ * Book 엔티티에 대한 JPA Repository
+ * 기본 CRUD + 사용자 정의 쿼리 메서드
+ */
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+    // 제목으로 책 조회
     Optional<Book> findByTitle(String title);
 
-    // 기본적으로 다음과 같은 메서드를 자동으로 제공함:
-    // - findAll() : 전체 목록 조회
-    // - findById(Long id) : ID로 단건 조회
-    // - save(Book book) : 삽입 또는 수정
-    // - deleteById(Long id) : 삭제
-    // - existsById(Long id) : 존재 여부 확인
-
+    // 제목 + 저자 + 장르가 모두 일치하는 책 조회 (중복 방지용)
+    Optional<Book> findByTitleAndAuthorAndGenre(String title, String author, Genre genre);
 }

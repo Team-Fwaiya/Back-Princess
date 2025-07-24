@@ -14,23 +14,24 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+
 public class BookRequest {
 
     @NotBlank
-    @Schema(description = "책 제목", example = "나미야 잡화점의 기적")
+    @Schema(description = "책 제목", example = "넛지")
     private String title;
 
     @NotBlank
-    @Schema(description = "저자", example = "히가시노 게이고")
+    @Schema(description = "저자", example = "리처드 탈러, 캐스 선스타인")
     private String author;
 
     @NotNull
-    @Schema(description = "장르 (enum)", example = "fiction", implementation = Genre.class)
+    @Schema(description = "장르 (enum)", example = "humanities", implementation = Genre.class)
     private Genre genre;
 
-    @Schema(description = "책 표지 이미지 URL", example = "https://s3.bucket.com/image.jpg")
+    @Schema(description = "책 표지 이미지 URL", example = "https://s3.bucket.com/nudge.jpg")
     private String coverImageUrl;
 
-    @Schema(description = "해시태그", example = "#감동#힐링")
+    @Schema(description = "해시태그", example = "#행동경제학#넛지이론#선택설계#심리학")
     private String hashtags;
 }

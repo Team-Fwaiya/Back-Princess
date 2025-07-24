@@ -41,6 +41,10 @@ public enum ErrorCode implements BaseCode { // 실패
     BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOK_4001", "해당 책 정보를 찾을 수 없습니다."),
     BOOK_TITLE_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOK_4002", "해당 제목의 책이 존재하지 않습니다."),
 
+    // ReadingLog
+    READING_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "READING_4002", "해당 독서록을 찾을 수 없습니다."),
+
+
     // Discussion
     DISCUSSION_NOT_FOUND(HttpStatus.NOT_FOUND, "DISCUSSION_4001", "활성화된 토론방이 존재하지 않습니다."),
 
