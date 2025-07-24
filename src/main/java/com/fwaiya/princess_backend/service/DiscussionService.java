@@ -72,12 +72,10 @@ public class DiscussionService {
     }
 
     /** 토론방 삭제 **/
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 3600000)
     @Transactional
     public void updateDiscussionStatus(){
 
-        // 활성화 되어 있고 일주일 전에 생성된 주문 찾기
-        // 정확히 일주일 전이 아닌 날짜만 보게끔 고쳐보자
         List<Discussion> expiredDiscussions = discussionRepository.findByStatusAndEndDateBefore(
                 DiscussionStatus.ACTIVE,
                 LocalDateTime.now()

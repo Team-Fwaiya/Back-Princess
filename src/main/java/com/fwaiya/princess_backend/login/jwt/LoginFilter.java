@@ -1,5 +1,7 @@
 package com.fwaiya.princess_backend.login.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fwaiya.princess_backend.login.dto.LoginRequestDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,14 +24,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final JWTUtil jwtUtil;
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            LoginRequestDto loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequestDto.class);
 
-        String username = request.getParameter("userId");
-        String password = request.getParameter("password");
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+            String username = loginRequest.getUserId();
+            String password = loginRequest.getPassword();
 
-        return authenticationManager.authenticate(authToken);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+
+            return authenticationManager.authenticate(authToken);
+        } catch (IOException e) {
+            throw new RuntimeException("로그인 요청 파싱 실패", e);
+        }
     }
 
     @Override

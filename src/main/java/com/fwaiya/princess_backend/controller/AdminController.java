@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/admin")
 @Tag(name = "07. 관리자 권한 기능 관리", description = " 관리자(1234@naver.com) 권한 기능을 사용할 수 있습니다. ")

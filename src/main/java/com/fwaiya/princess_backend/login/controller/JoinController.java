@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,9 @@ public class JoinController {
 
     @Operation(summary = "회원가입", description = "사용자 정보를 받아 회원가입을 진행합니다.")
     @PostMapping("/join")
-    public ResponseEntity<String> joinProcess(JoinRequestDto joinRequestDto) {
+    public ResponseEntity<String> joinProcess(
+            @RequestBody JoinRequestDto joinRequestDto
+    ) {
         JoinResponseDto response = joinService.joinProcess(joinRequestDto);
         return ResponseEntity.ok("회원 가입을 성공하였습니다");
     }

@@ -1,5 +1,6 @@
 package com.fwaiya.princess_backend.global;
 
+import com.amazonaws.HttpMethod;
 import com.fwaiya.princess_backend.login.jwt.JWTFilter;
 import com.fwaiya.princess_backend.login.jwt.JWTUtil;
 import com.fwaiya.princess_backend.login.jwt.LoginFilter;
