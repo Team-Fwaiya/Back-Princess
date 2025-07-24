@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 
 /**
  * BookService
- * 책 등록, 조회, 수정, 삭제와 같은 비즈니스 로직을 처리하는 서비스 클래스
+ * 책 등록, 조회,
+ * 수정, 삭제와 같은 비즈니스 로직을 처리하는 서비스 클래스
  */
 @Service
 @RequiredArgsConstructor
@@ -89,5 +90,29 @@ public class BookService {
             throw new GeneralException(ErrorCode.BOOK_NOT_FOUND);
         }
         bookRepository.deleteById(id);
+    }
+
+    /**
+     * [findOrCreateBook]
+     * title + author + genre 기준으로 책이 존재하면 반환,
+     * 존재하지 않으면 새로 등록한 뒤 반환
+     * → 독서록 작성 시 책 정보 기반으로 연결할 때 사용
+     */
+    @Transactional
+    public Book findOrCreateBook(BookRequest request) {
+        return bookRepository.findByTitleAndAuthorAndGenre(
+                request.getTitle(),
+                request.getAuthor(),
+                request.getGenre()
+        ).orElseGet(() -> {
+            Book newBook = Book.builder()
+                    .title(request.getTitle())
+                    .author(request.getAuthor())
+                    .genre(request.getGenre())
+                    .coverImageUrl(request.getCoverImageUrl())
+                    .hashtags(request.getHashtags())
+                    .build();
+            return bookRepository.save(newBook);
+        });
     }
 }
