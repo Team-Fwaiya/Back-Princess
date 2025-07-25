@@ -69,7 +69,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         // 로그인 없이 접근 가능
                         .requestMatchers(
-                                "/login/swagger",
+                                "/login/**",        // /login과 /login/** 모두 허용
                                 "/",
                                 "/join",
 
