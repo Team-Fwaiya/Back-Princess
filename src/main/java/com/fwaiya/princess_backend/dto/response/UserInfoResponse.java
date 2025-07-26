@@ -15,7 +15,6 @@ public class UserInfoResponse {
     private String nickname;
     private String imagePath;
     private String address;
-    //private LocalDate birthDate;
     private String readingLevel;
     private int untilNextLevel;
     private List<WantCreateResponse> wantToReads;
@@ -26,7 +25,6 @@ public class UserInfoResponse {
                 user.getNickname(),
                 user.getImagePath(),
                 user.getAddress(),
-                //user.getBirthDate(),
                 user.getReadingLevel().getKoreanName(),
                 user.CountUntilNextLevel(),
                 user.getWantToReads().stream()

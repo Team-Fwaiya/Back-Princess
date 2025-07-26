@@ -42,9 +42,6 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String address;
 
-    //@Column(nullable = false)
-    //private LocalDate birthDate;
-
     @Column(nullable = false)
     private String role;
 
