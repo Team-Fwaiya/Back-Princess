@@ -28,7 +28,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // JWT 검사 생략하는 경로들
         String path = request.getRequestURI();
-        if (path.equals("/join") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs") || path.startsWith("/api-docs")) {
+        if (path.startsWith("/join") || path.startsWith("/login") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs") || path.startsWith("/api-docs")) {
             filterChain.doFilter(request, response);
             return;
         }

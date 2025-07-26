@@ -26,7 +26,8 @@ public class JoinService {
         String username = joinRequestDto.getUserId();
         String nickname = joinRequestDto.getNickname();
         String password = joinRequestDto.getPassword();
-        LocalDate birthDate = joinRequestDto.getBirthDate();
+        String address = joinRequestDto.getAddress();
+        //LocalDate birthDate = joinRequestDto.getBirthDate();
 
         Boolean isExist1 = userRepository.existsByUsername(username);
         if (isExist1) {
@@ -42,7 +43,8 @@ public class JoinService {
         user.setUsername(username);
         user.setNickname(nickname);
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        user.setBirthDate(birthDate);
+        user.setAddress(address);
+        //user.setBirthDate(birthDate);
         String role = username.equals("1234@naver.com") ? "ROLE_ADMIN" : "ROLE_USER";
         user.setRole(role);
 

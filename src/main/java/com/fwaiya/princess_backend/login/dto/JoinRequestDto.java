@@ -25,7 +25,11 @@ public class JoinRequestDto {
     @Schema(description = "비밀번호", example = "yaaan7")
     private String password;
 
-    @NotNull(message = "생년월일은 필수입니다.")  // @NotBlank -> @NotNull로 변경
-    @Schema(description = "생년월일", example = "2025-01-01")
-    private LocalDate birthDate;
+    @NotNull(message = "궁전 주소는 필수입니다.")
+    @Schema(description = "주소", example = "경기도 고양시")
+    private String address;
+
+//    @NotNull(message = "생년월일은 필수입니다.")  // @NotBlank -> @NotNull로 변경
+//    @Schema(description = "생년월일", example = "2025-01-01")
+//    private LocalDate birthDate;
 }

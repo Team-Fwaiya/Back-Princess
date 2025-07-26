@@ -1,6 +1,6 @@
 package com.fwaiya.princess_backend.global;
 
-import com.amazonaws.HttpMethod;
+import org.springframework.http.HttpMethod;
 import com.fwaiya.princess_backend.login.jwt.JWTFilter;
 import com.fwaiya.princess_backend.login.jwt.JWTUtil;
 import com.fwaiya.princess_backend.login.jwt.LoginFilter;
@@ -79,7 +79,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-
+                        .requestMatchers(HttpMethod.POST, "/join").permitAll()
                         // admin 페이지엔 role이 관리자일 때만 접근 가능
                         .requestMatchers("/api/admin/discussions").hasRole("ADMIN")
                         // 외엔 로그인한 사용자만 접근 가능
