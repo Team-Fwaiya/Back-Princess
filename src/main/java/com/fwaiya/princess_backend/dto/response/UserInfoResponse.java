@@ -14,7 +14,7 @@ import java.util.List;
 public class UserInfoResponse {
     private String nickname;
     private String imagePath;
-    private LocalDate birthDate;
+    private String address;
     private String readingLevel;
     private int untilNextLevel;
     private List<WantCreateResponse> wantToReads;
@@ -24,7 +24,7 @@ public class UserInfoResponse {
         return new UserInfoResponse(
                 user.getNickname(),
                 user.getImagePath(),
-                user.getBirthDate(),
+                user.getAddress(),
                 user.getReadingLevel().getKoreanName(),
                 user.CountUntilNextLevel(),
                 user.getWantToReads().stream()
