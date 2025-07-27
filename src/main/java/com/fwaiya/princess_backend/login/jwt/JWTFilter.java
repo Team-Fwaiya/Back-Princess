@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +29,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // JWT 검사 생략하는 경로들
         String path = request.getRequestURI();
-        if (path.startsWith("/join") || path.startsWith("/login") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs") || path.startsWith("/api-docs")) {
+        if ( HttpMethod.OPTIONS.matches(request.getMethod())||path.startsWith("/join") || path.startsWith("/login") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs") || path.startsWith("/api-docs")) {
             filterChain.doFilter(request, response);
             return;
         }
