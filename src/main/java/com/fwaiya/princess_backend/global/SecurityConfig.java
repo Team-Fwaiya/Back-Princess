@@ -66,7 +66,9 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
         //경로별 인가 작업
         http
+
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(HttpMethod.POST, "/join").permitAll()
                         // 로그인 없이 접근 가능
                         .requestMatchers(
                                 "/login/**",        // /login과 /login/** 모두 허용
@@ -79,7 +81,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/join").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // admin 페이지엔 role이 관리자일 때만 접근 가능
                         .requestMatchers("/api/admin/discussions").hasRole("ADMIN")
                         // 외엔 로그인한 사용자만 접근 가능
@@ -106,7 +108,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:3000")); // 프론트 테스트 환경
+        //config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:3000", "http://15.165.5.232:8080")); // 프론트 테스트 환경
+        config.setAllowedOriginPatterns(List.of("http://localhost:*", "http://15.165.5.232:*")); //유연하게 처리
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);

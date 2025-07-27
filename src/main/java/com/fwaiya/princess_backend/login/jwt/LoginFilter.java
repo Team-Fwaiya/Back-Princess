@@ -66,7 +66,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("Authorization", "Bearer " + token);
 
         // 응답 본문에도 토큰 포함
-        String jsonResponse = String.format("{\"message\":\"로그인 성공\",\"token\":\"Bearer %s\"}", token);
+        String jsonResponse = String.format("{\"message\":\"로그인 성공\",\"token\":\"%s\"}", token);
         response.getWriter().write(jsonResponse);
 
         log.info("로그인 성공 - 사용자: {}", username);
