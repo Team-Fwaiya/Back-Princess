@@ -16,6 +16,10 @@ public enum SuccessCode implements BaseCode { // 성공
     USER_LOGIN_SUCCESS(HttpStatus.CREATED, "USER_201", "로그인이 완료되었습니다."),
     USER_DELETE_SUCCESS(HttpStatus.OK, "USER_200", "회원탈퇴가 완료되었습니다."),
     USER_INFO_GET_SUCCESS(HttpStatus.OK, "USER_2001", "회원정보 조회가 완료되었습니다."),
+
+    ALREADY_USED_NICKNAME(HttpStatus.OK, "USER_4031", "이미 사용 중인 닉네임입니다."),
+    ALREADY_USED_USERID(HttpStatus.OK, "USER_4032", "이미 사용 중인 아이디 입니다."),
+
     // User_Want
     USER_WANT_POST_SUCCESS(HttpStatus.OK, "USER_2002", "읽고 싶은 책 등록이 완료되었습니다."),
     USER_WANT_DELETE_SUCCESS(HttpStatus.OK, "USER_2003", "읽고 싶은 책 삭제가 완료되었습니다."),
