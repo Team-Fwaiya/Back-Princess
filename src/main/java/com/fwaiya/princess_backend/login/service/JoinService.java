@@ -1,12 +1,11 @@
 package com.fwaiya.princess_backend.login.service;
 
 import com.fwaiya.princess_backend.domain.User;
-import com.fwaiya.princess_backend.global.api.ErrorCode;
-import com.fwaiya.princess_backend.global.exception.GeneralException;
+import com.fwaiya.princess_backend.global.api.SuccessCode;
+import com.fwaiya.princess_backend.global.api.ApiResponse;
 import com.fwaiya.princess_backend.login.dto.JoinRequestDto;
 import com.fwaiya.princess_backend.login.dto.JoinResponseDto;
 import com.fwaiya.princess_backend.repository.UserRepository;
-import io.swagger.v3.oas.models.responses.ApiResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +21,7 @@ public class JoinService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public JoinResponseDto joinProcess(JoinRequestDto joinRequestDto) {
+    public ApiResponse<JoinResponseDto> joinProcess(JoinRequestDto joinRequestDto) {
 
         String username = joinRequestDto.getUserId();
         String nickname = joinRequestDto.getNickname();
@@ -32,12 +31,12 @@ public class JoinService {
 
         Boolean isExist1 = userRepository.existsByUsername(username);
         if (isExist1) {
-            throw new GeneralException(ErrorCode.ALREADY_USED_USERID);
+            return ApiResponse.onSuccess(SuccessCode.ALREADY_USED_USERID, null);
         }
 
         Boolean isExist2 = userRepository.existsByNickname(nickname);
         if (isExist2) {
-            throw new GeneralException(ErrorCode.ALREADY_USED_NICKNAME);
+            return ApiResponse.onSuccess(SuccessCode.ALREADY_USED_NICKNAME, null);
         }
 
         User user = new User();
@@ -51,7 +50,7 @@ public class JoinService {
 
         userRepository.save(user);
 
-        return JoinResponseDto.from(user);
+        return ApiResponse.onSuccess(SuccessCode.USER_JOIN_SUCCESS, JoinResponseDto.from(user));
     }
 
 }

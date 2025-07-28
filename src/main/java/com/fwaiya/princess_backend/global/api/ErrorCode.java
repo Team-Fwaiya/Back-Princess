@@ -12,8 +12,6 @@ public enum ErrorCode implements BaseCode { // 실패
 
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4041", "존재하지 않는 회원입니다."),
-    ALREADY_USED_NICKNAME(HttpStatus.FORBIDDEN, "USER_4031", "이미 사용 중인 닉네임입니다."),
-    ALREADY_USED_USERID(HttpStatus.FORBIDDEN, "USER_4032", "이미 사용 중인 아이디 입니다."),
 
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "USER_4011", "자격 증명이 유효하지 않습니다."),
     UNAUTHORIZED_READING_LOG_ACCESS(HttpStatus.FORBIDDEN, "READING_4003", "본인의 독서록만 조회할 수 있습니다."),
