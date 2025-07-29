@@ -9,12 +9,14 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class DiscussionResponse {
+    private Long discussionId;
     private String bookTitle;
     private String bookAuthor;
     private String bookCoverImageUrl;
 
     public static DiscussionResponse from(Discussion discussion) {
         return new DiscussionResponse(
+                discussion.getId(),
                 discussion.getBook().getTitle(),
                 discussion.getBook().getAuthor(),
                 discussion.getBook().getCoverImageUrl()
