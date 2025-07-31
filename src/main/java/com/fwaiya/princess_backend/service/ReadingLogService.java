@@ -48,7 +48,7 @@ public class ReadingLogService {
         ReadingLog readingLog = new ReadingLog();
         readingLog.setUser(user);
         readingLog.setBook(book);
-        readingLog.setOneLineReview(request.getOneLineReview());
+        /*readingLog.setOneLineReview(request.getOneLineReview());*/
         readingLog.setContent(request.getContent());
         readingLog.setRating(request.getRating());
 
@@ -115,7 +115,7 @@ public class ReadingLogService {
         }
 
         // 필드 수정
-        log.setOneLineReview(request.getOneLineReview());
+        // log.setOneLineReview(request.getOneLineReview());
         log.setContent(request.getContent());
         log.setRating(request.getRating());
     }

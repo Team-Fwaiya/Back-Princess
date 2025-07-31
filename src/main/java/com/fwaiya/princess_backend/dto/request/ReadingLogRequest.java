@@ -24,10 +24,9 @@ import lombok.NoArgsConstructor;
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
     "genre": "science",
-    "coverImageUrl": "https://s3.bucket.com/selfish_gene.jpg",
+    "coverImageUrl": "s3://princess-app-images/books/191b0b36-fbfa-49d5-b045-9eb181122f1e_IMG_3462.jpeg",
     "hashtags": "#진화#생물학#과학명저"
   },
-  "oneLineReview": "진화론에 대한 시야가 넓어졌습니다.",
   "content": "이 책은 생물학을 넘어서 인간 사회와 사고방식까지 통찰하게 해줍니다. 어렵지만 꼭 읽어야 할 과학 명저입니다.",
   "rating": 5
 }
@@ -42,8 +41,8 @@ public class ReadingLogRequest {
     @NotNull(message = "책 정보는 필수입니다.")
     private BookRequest book;
 
-    @NotBlank(message = "한 줄 평은 필수입니다.")
-    private String oneLineReview;
+   /* @NotBlank(message = "한 줄 평은 필수입니다.")
+    private String oneLineReview;*/
 
     @Lob
     @NotBlank(message = "감상 내용은 필수입니다.")

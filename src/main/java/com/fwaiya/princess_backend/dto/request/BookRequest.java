@@ -29,7 +29,7 @@ public class BookRequest {
     @Schema(description = "장르 (enum)", example = "humanities", implementation = Genre.class)
     private Genre genre;
 
-    @Schema(description = "책 표지 이미지 URL", example = "https://s3.bucket.com/nudge.jpg")
+    @Schema(description = "책 표지 이미지 URL", example = "s3://princess-app-images/books/191b0b36-fbfa-49d5-b045-9eb181122f1e_IMG_3462.jpeg")
     private String coverImageUrl;
 
     @Schema(description = "해시태그", example = "#행동경제학#넛지이론#선택설계#심리학")
