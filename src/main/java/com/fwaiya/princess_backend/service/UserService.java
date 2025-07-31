@@ -72,13 +72,9 @@ public class UserService {
         wantToReadRepository.delete(wantToRead);
     }
 
-    /** 프로필 수정 기능**/
+    /** 프로필 등록**/
     @Transactional
     public void updateProfile(String imagePath, User user) {
-        // imagePath가 고정 이미지 리스트에 포함되는지 검증
-        if (!ProfileImageConstants.FIXED_IMAGES.contains(imagePath)) {
-            throw new GeneralException(ErrorCode.INVALID_PROFILE_IMAGE);
-        }
         user.updateImagePath(imagePath);
     }
 }

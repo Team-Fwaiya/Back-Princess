@@ -8,15 +8,20 @@ import com.fwaiya.princess_backend.global.api.ApiResponse;
 import com.fwaiya.princess_backend.global.api.SuccessCode;
 import com.fwaiya.princess_backend.global.constant.ProfileImageConstants;
 import com.fwaiya.princess_backend.login.jwt.CustomUserDetails;
+import com.fwaiya.princess_backend.service.S3Service;
 import com.fwaiya.princess_backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** * 사용자 정보 관리하는 컨트롤러 클래스 * 사용자 CRUD** @author yaaan7 * @since 2025-06-29 */
 @RestController
@@ -25,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final S3Service s3Service;
 
     /**
      * 회원탈퇴* *@param username(=userId)
@@ -38,7 +44,9 @@ public class UserController {
         return ApiResponse.onSuccess(SuccessCode.USER_DELETE_SUCCESS, "True");
     }
 
-    /** *사용자 정보 조회*/
+    /**
+     * 사용자 정보 조회
+     */
     @GetMapping("/me")
     @Operation(summary = "사용자 정보 조회", description = "로그인한 사용자의 정보를 조회합니다.")
     public ApiResponse<UserInfoResponse> getUserInfo(
@@ -48,46 +56,47 @@ public class UserController {
         return ApiResponse.onSuccess(SuccessCode.USER_INFO_GET_SUCCESS, userInfoResponse);
     }
 
-    /** 읽고 싶은 책 등록 **/
+    /**
+     * 읽고 싶은 책 등록
+     **/
     @PostMapping("/want")
     @Operation(summary = "읽고 싶은 책 등록", description = "로그인한 사용자가 읽고 싶은 책을 등록합니다.")
     public ApiResponse<String> createWant(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @Valid @RequestBody WantCreateRequest wantCreateRequest
-    ){
+    ) {
         User user = userService.findByUsername(customUserDetails.getUsername());
-        userService.createWant( wantCreateRequest,user );
+        userService.createWant(wantCreateRequest, user);
         return ApiResponse.onSuccess(SuccessCode.USER_WANT_POST_SUCCESS, "True");
     }
 
-    /** 읽고 싶은 책 삭제 **/
+    /**
+     * 읽고 싶은 책 삭제
+     **/
     @DeleteMapping("/want/{wantID}")
     @Operation(summary = "읽고 싶은 책 삭제", description = "로그인한 사용자의 특정 읽고 싶은 책을 삭제합니다.")
     public ApiResponse<String> deleteWant(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long wantID
-    ){
+    ) {
         User user = userService.findByUsername(customUserDetails.getUsername());
         userService.deleteWant(wantID, user);
         return ApiResponse.onSuccess(SuccessCode.USER_WANT_DELETE_SUCCESS, "True");
     }
 
-    /** 프로필 사진 수정**/
-    @PatchMapping("/profile")
-    @Operation(summary = "프로필 사진 변경", description = "로그인한 사용자의 프로필 사진을 8가지 중 하나로 변경합니다.")
+    /**
+     * 프로필 사진 등록
+     **/
+    @PatchMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "프로필 사진 등록", description = "로그인한 사용자의 프로필 사진을 등록합니다.")
     public ApiResponse<String> updateProfile(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @Valid @RequestBody ProfileImageUpdateRequest profileImageUpdateRequest
-    ){
+            @RequestParam("file") MultipartFile file
+    ) {
         User user = userService.findByUsername(customUserDetails.getUsername());
-        userService.updateProfile(profileImageUpdateRequest.getImagePath(), user);
-        return ApiResponse.onSuccess(SuccessCode.USER_PROFILE_IMAGE_UPDATE_SUCCESS, "True");
+        String imageUrl = s3Service.uploadProfileImage(file);
+        userService.updateProfile(imageUrl, user);
+        return ApiResponse.onSuccess(SuccessCode.USER_PROFILE_IMAGE_UPDATE_SUCCESS, imageUrl);
     }
 
-    /** 프로필 사진 목록 조회 **/
-    @GetMapping("/profiles")
-    @Operation(summary = "프로필 사진 목록 조회", description="고정된 8개의 프로필 사진 목록을 반환합니다.")
-    public ApiResponse<List<String>> getProfiles(){
-         return ApiResponse.onSuccess(SuccessCode.USER_PROFILE_IMAGE_LIST_GET_SUCCESS, ProfileImageConstants.FIXED_IMAGES);
-    }
 }

@@ -37,7 +37,7 @@ public class User extends BaseEntity {
 
     // 기본 값 수정하기
     @Column(nullable = false)
-    private String imagePath= "https://s3.bucket.com/profile/default2.png";
+    private String imagePath;
 
     @Column(nullable = false)
     private String address;

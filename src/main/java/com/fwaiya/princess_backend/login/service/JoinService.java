@@ -44,7 +44,7 @@ public class JoinService {
         user.setNickname(nickname);
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setAddress(address);
-        //user.setBirthDate(birthDate);
+        user.setImagePath("https://princess-app-images.s3.ap-northeast-2.amazonaws.com/profiles/%ED%94%BC%EC%95%84%EB%85%B8.png");
         String role = username.equals("1234@naver.com") ? "ROLE_ADMIN" : "ROLE_USER";
         user.setRole(role);
 
