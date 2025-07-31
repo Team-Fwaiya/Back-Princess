@@ -21,8 +21,8 @@ public class ReadingLog extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String OneLineReview;
+    /*@Column(nullable = false)
+    private String OneLineReview;*/
 
     @Lob
     @Column(nullable = false)
@@ -33,8 +33,8 @@ public class ReadingLog extends BaseEntity {
     @Max(5)
     private int rating; // 별 0~5개
 
-    // 독서록과 책 연관관계 (1:1)
-    @OneToOne(fetch = FetchType.LAZY)
+    // 독서록과 책 연관관계 (N:1)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
