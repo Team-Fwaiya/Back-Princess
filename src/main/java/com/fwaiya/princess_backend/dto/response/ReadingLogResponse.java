@@ -16,8 +16,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReadingLogResponse {
+    private Long readingLogId; // 추가된 필드
 
-    private String oneLineReview;
+    // private String oneLineReview;
 
     private String content;
 
@@ -43,7 +44,8 @@ public class ReadingLogResponse {
      */
     public static ReadingLogResponse from(ReadingLog readingLog) {
         return new ReadingLogResponse(
-                readingLog.getOneLineReview(),
+                readingLog.getId(),  // readingLogId 세팅
+                /*readingLog.getOneLineReview(),*/
                 readingLog.getContent(),
                 readingLog.getRating(),
                 readingLog.getBook().getTitle(),
