@@ -26,6 +26,7 @@ spring:
 
 server:
   port: 8080
+  forward-headers-strategy: framework
 
 # JWT 설정 (기존 형태도 유지)
 jwt:
@@ -47,8 +48,10 @@ springdoc:
     groups-order: DESC
     operationsSorter: method
     disable-swagger-default-url: true
+    server-url: https://princess-api.duckdns.org
   api-docs:
     path: /api-docs
+    server-url: https://princess-api.duckdns.org
   show-actuator: true
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
