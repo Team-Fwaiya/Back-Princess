@@ -109,7 +109,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         //config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:3000", "http://15.165.5.232:8080")); // 프론트 테스트 환경
-        config.setAllowedOriginPatterns(List.of("http://localhost:*", "http://15.165.5.232:*", "https://6888d7778743030008df868d--princess-library.netlify.app/" )); //유연하게 처리
+        config.setAllowedOriginPatterns(List.of("https://princess-library.netlify.app/" ,"http://localhost:*", "http://15.165.5.232:*", "https://6888d7778743030008df868d--princess-library.netlify.app/" )); //유연하게 처리
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
