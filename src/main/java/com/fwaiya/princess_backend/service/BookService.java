@@ -2,12 +2,15 @@ package com.fwaiya.princess_backend.service;
 
 import com.fwaiya.princess_backend.domain.Book;
 import com.fwaiya.princess_backend.dto.request.BookRequest;
+import com.fwaiya.princess_backend.dto.response.BookRankingResponse;
 import com.fwaiya.princess_backend.dto.response.BookResponse;
 import com.fwaiya.princess_backend.global.api.ErrorCode;
 import com.fwaiya.princess_backend.global.exception.GeneralException;
 import com.fwaiya.princess_backend.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest; // ✅ 올바른 import
+import org.springframework.data.domain.Pageable;   // ✅ 올바른 import
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -115,4 +118,16 @@ public class BookService {
             return bookRepository.save(newBook);
         });
     }
+
+    /**
+     * 독서록이 가장 많이 작성된 책 TOP 8을 조회
+     * - PageRequest.of(0, 8)로 최대 8개 제한
+     */
+
+    @Transactional
+    public List<BookRankingResponse> getBookRanking() {
+        Pageable pageable = PageRequest.of(0, 8); // 최대 8개
+        return bookRepository.findTop8BooksByReadingLogCount(pageable);
+    }
+
 }
