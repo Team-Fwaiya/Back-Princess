@@ -87,7 +87,7 @@ public class UserController {
     /**
      * 프로필 사진 등록
      **/
-    @PatchMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "프로필 사진 등록", description = "로그인한 사용자의 프로필 사진을 등록합니다.")
     public ApiResponse<String> updateProfile(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
