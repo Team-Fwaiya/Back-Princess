@@ -15,5 +15,5 @@ public interface DiscussionRepository extends JpaRepository<Discussion, Long> {
 
     List<Discussion> findTop8ByOrderByCreatedAtDesc();
     List<Discussion> findByStatusAndIdNotIn(DiscussionStatus status, List<Long> top8Ids);
-
+    List<Discussion> findByStatus(DiscussionStatus status);
 }

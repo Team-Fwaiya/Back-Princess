@@ -55,7 +55,6 @@ public class DiscussionService {
     public DiscussionResponse createDiscussion(DiscussionCreateRequest request) {
         // 책 제목 조회
         Book book = bookRepository.findByTitle(request.getBookTitle())
-                //.orElseThrow(() -> new IllegalArgumentException("해당 제목의 책이 존재하지 않습니다: " + request.getBookTitle()));
                 .orElseThrow(() -> new GeneralException(ErrorCode.BOOK_TITLE_NOT_FOUND));
 
         Discussion discussion = Discussion.builder()
@@ -68,12 +67,14 @@ public class DiscussionService {
                 .build();
 
         Discussion saved = discussionRepository.save(discussion);
+
+        updateDiscussionStatus();
         return DiscussionResponse.from(saved);
     }
 
     /** 토론방 최신 8개만 ACTIVE 상태로 **/
     // 홈화면에 8개만 뜨고 + 나머지는 비활성화로 변경
-    @Scheduled(fixedRate = 3600000)
+    //@Scheduled(fixedRate = 3600000)
     @Transactional
     public void updateDiscussionStatus(){
 
@@ -89,5 +90,16 @@ public class DiscussionService {
         for (Discussion discussion : cancelled) {
             discussion.updateStatus(DiscussionStatus.CANCELLED);
         }
+    }
+
+    @Scheduled(cron = "0 0 3 * * ?")
+    @Transactional
+    public void deleteCancelledDiscussion(){
+
+        List<Discussion> cancelled = discussionRepository.findByStatus(
+                DiscussionStatus.CANCELLED
+        );
+
+        discussionRepository.deleteAll(cancelled);
     }
 }
