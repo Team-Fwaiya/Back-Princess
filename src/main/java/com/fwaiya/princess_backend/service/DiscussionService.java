@@ -59,7 +59,6 @@ public class DiscussionService {
 
         Discussion discussion = Discussion.builder()
                 .title(request.getTitle())
-                .description(request.getDescription())
                 .book(book)
                 .status(DiscussionStatus.ACTIVE)
                 .endDate(LocalDateTime.now().plusWeeks(1))
@@ -91,5 +90,4 @@ public class DiscussionService {
             discussion.updateStatus(DiscussionStatus.CANCELLED);
         }
     }
-    
 }

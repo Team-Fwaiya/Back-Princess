@@ -30,9 +30,6 @@ public class Discussion extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
-    @Lob // 최대 65,535자
-    private String description;
-
 //    @Column(nullable = false)
 //    private LocalDate startDate;
 //
