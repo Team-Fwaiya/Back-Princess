@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/libraries")
 @RequiredArgsConstructor
-@Tag(name = "Library", description = "도서관 관련 API")
+@Tag(name = "10. 도서관", description = "도서관 관련 API")
 public class LibraryController {
 
     private final LibraryService libraryService;
