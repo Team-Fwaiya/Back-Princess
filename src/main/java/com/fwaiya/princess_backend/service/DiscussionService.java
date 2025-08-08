@@ -55,12 +55,10 @@ public class DiscussionService {
     public DiscussionResponse createDiscussion(DiscussionCreateRequest request) {
         // 책 제목 조회
         Book book = bookRepository.findByTitle(request.getBookTitle())
-                //.orElseThrow(() -> new IllegalArgumentException("해당 제목의 책이 존재하지 않습니다: " + request.getBookTitle()));
                 .orElseThrow(() -> new GeneralException(ErrorCode.BOOK_TITLE_NOT_FOUND));
 
         Discussion discussion = Discussion.builder()
                 .title(request.getTitle())
-                .description(request.getDescription())
                 .book(book)
                 .status(DiscussionStatus.ACTIVE)
                 .endDate(LocalDateTime.now().plusWeeks(1))
@@ -68,21 +66,27 @@ public class DiscussionService {
                 .build();
 
         Discussion saved = discussionRepository.save(discussion);
+
+        updateDiscussionStatus();
         return DiscussionResponse.from(saved);
     }
 
-    /** 토론방 삭제 **/
-    @Scheduled(fixedRate = 3600000)
+    /** 토론방 최신 8개만 ACTIVE 상태로 **/
+    // 홈화면에 8개만 뜨고 + 나머지는 비활성화로 변경
+    //@Scheduled(fixedRate = 3600000)
     @Transactional
     public void updateDiscussionStatus(){
 
-        List<Discussion> expiredDiscussions = discussionRepository.findByStatusAndEndDateBefore(
+        // 최신 토론방 8개
+        List<Discussion> top8 = discussionRepository.findTop8ByOrderByCreatedAtDesc();
+
+        // 8개 없는데 활성화인 토론방 찾기
+        List<Discussion> cancelled = discussionRepository.findByStatusAndIdNotIn(
                 DiscussionStatus.ACTIVE,
-                LocalDateTime.now()
+                top8.stream().map(Discussion::getId).toList()
         );
 
-        // 상태 'CANCELED'로 변경
-        for (Discussion discussion : expiredDiscussions) {
+        for (Discussion discussion : cancelled) {
             discussion.updateStatus(DiscussionStatus.CANCELLED);
         }
     }

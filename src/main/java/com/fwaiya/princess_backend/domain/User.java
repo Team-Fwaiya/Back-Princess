@@ -72,6 +72,9 @@ public class User extends BaseEntity {
 
     // 다음 레벨까지 몇 권 남았는지 계산
     public int CountUntilNextLevel(){
+        if(this.readingLevel == ReadingLevel.princess){
+            return 0;
+        }
         return 5 - ( readCount % 5 );
     }
 
