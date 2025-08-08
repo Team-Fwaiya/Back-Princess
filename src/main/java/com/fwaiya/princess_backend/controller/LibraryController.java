@@ -14,18 +14,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/libraries")
 @RequiredArgsConstructor
-@Tag(name = "10. 도서관 조회", description = "도서관 조회 API")
+@Tag(name = "10. 도서관", description = "도서관 관련 API")
 public class LibraryController {
 
     private final LibraryService libraryService;
 
     @GetMapping("/nearby")
-    @Operation(summary = "근처 도서관 조회", description = "시와 구를 바탕으로 근처 도서관 5개를 조회합니다.")
+    @Operation(summary = "근처 도서관 조회", description = "위치 정보를 바탕으로 근처 도서관 5개를 조회합니다.")
     public ApiResponse<List<LibraryResponseDto>> getNearbyLibraries(
-            @RequestParam("city") String city,
-            @RequestParam("district") String district) {
+            @RequestParam("location") String location) {
 
-        List<LibraryResponseDto> libraries = libraryService.getNearbyLibraries(city, district);
+        List<LibraryResponseDto> libraries = libraryService.getNearbyLibraries(location);
         return ApiResponse.onSuccess(SuccessCode.OK, libraries);
     }
 }

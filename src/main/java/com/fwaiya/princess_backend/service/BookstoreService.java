@@ -1,8 +1,8 @@
 package com.fwaiya.princess_backend.service;
 
-import com.fwaiya.princess_backend.dto.response.LibraryResponseDto;
-import com.fwaiya.princess_backend.domain.Library;
-import com.fwaiya.princess_backend.repository.LibraryRepository;
+import com.fwaiya.princess_backend.dto.response.BookstoreResponseDto;
+import com.fwaiya.princess_backend.domain.Bookstore;
+import com.fwaiya.princess_backend.repository.BookstoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class LibraryService {
+public class BookstoreService {
 
-    private final LibraryRepository libraryRepository;
+    private final BookstoreRepository bookstoreRepository;
 
-    public List<LibraryResponseDto> getNearbyLibraries(String location) {
+    public List<BookstoreResponseDto> getNearbyBookstores(String location) {
         // 최대 5개 조회
         PageRequest pageRequest = PageRequest.of(0, 5);
 
@@ -25,21 +25,21 @@ public class LibraryService {
         String city = locationParts[0];
         String district = locationParts[1];
 
-        List<Library> libraries = null;
+        List<Bookstore> bookstores = null;
 
         // 시와 구 모두 있는 경우
         if (city != null && district != null) {
-            libraries = libraryRepository.findBySidoContainingAndSigunguContaining(
+            bookstores = bookstoreRepository.findByCtprvnNmContainingAndSignguNmContaining(
                     city, district, pageRequest);
         }
 
-        // 해당 지역에 도서관이 없거나 구가 없으면 시도만으로 검색
-        if ((libraries == null || libraries.isEmpty()) && city != null) {
-            libraries = libraryRepository.findBySidoContaining(city, pageRequest);
+        // 해당 지역에 서점이 없거나 구가 없으면 시도만으로 검색
+        if ((bookstores == null || bookstores.isEmpty()) && city != null) {
+            bookstores = bookstoreRepository.findByCtprvnNmContaining(city, pageRequest);
         }
 
-        return libraries != null ? libraries.stream()
-                .map(LibraryResponseDto::from)
+        return bookstores != null ? bookstores.stream()
+                .map(BookstoreResponseDto::from)
                 .collect(Collectors.toList()) : List.of();
     }
 
