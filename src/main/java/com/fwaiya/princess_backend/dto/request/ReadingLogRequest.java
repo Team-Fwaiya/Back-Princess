@@ -10,46 +10,57 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 /**
  * [ReadingLogRequest]
- * 사용자가 독서록을 작성하거나 수정할 때 요청 본문으로 전달하는 DTO 클래스
- * 책 정보를 포함하여 한 번의 요청으로 독서록과 책을 동시에 등록
+ * 독서록 작성/수정 요청 DTO
+ * - multipart/form-data 전송 시: @RequestPart("readingLog") 로 이 객체를 JSON으로
+ * - 표지 이미지는 별도 파트 coverImage(파일)로 전송.
  */
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "독서록 작성 요청 예시", example = """
+@Schema(
+        name = "ReadingLogRequest",
+        description = "독서록 작성 요청 바디(JSON). 파일은 별도 파트 coverImage로 전송",
+        example = """
 {
   "book": {
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
     "genre": "science",
-    "coverImageUrl": "s3://princess-app-images/books/191b0b36-fbfa-49d5-b045-9eb181122f1e_IMG_3462.jpeg",
+    "coverImageUrl": "https://... (파일이 있으면 서버에서 이 값은 무시)",
     "hashtags": "#진화#생물학#과학명저"
   },
-  "content": "이 책은 생물학을 넘어서 인간 사회와 사고방식까지 통찰하게 해줍니다. 어렵지만 꼭 읽어야 할 과학 명저입니다.",
+  "content": "이 책은 생물학을 넘어서 인간 사회와 사고방식까지 통찰하게 해줍니다.",
   "rating": 5
 }
-""")
+"""
+)
 public class ReadingLogRequest {
 
-    /**
-     * 독서록을 작성할 책의 정보
-     * - BookRequest 객체로 전달되며, 제목, 저자, 장르 등의 정보 포함
-     * - 해당 책이 DB에 없을 경우, 서버에서 자동으로 등록
-     */
     @NotNull(message = "책 정보는 필수입니다.")
+    @Schema(
+            description = "책 정보(JSON). 파일 업로드가 있을 경우 book.coverImageUrl은 무시됨",
+            implementation = BookRequest.class
+    )
     private BookRequest book;
 
-   /* @NotBlank(message = "한 줄 평은 필수입니다.")
-    private String oneLineReview;*/
 
     @Lob
     @NotBlank(message = "감상 내용은 필수입니다.")
+    @Schema(
+            description = "독서록 본문",
+            example = "이 책은 생물학을 넘어서 인간 사회와 사고방식까지 통찰하게 해줍니다."
+    )
     private String content;
 
     @NotNull(message = "평점은 필수입니다.")
-    @Min(0)
-    @Max(5)
+    @Min(0) @Max(5)
+    @Schema(
+            description = "평점(0~5)",
+            minimum = "0", maximum = "5",
+            example = "5"
+    )
     private Integer rating;
 }
