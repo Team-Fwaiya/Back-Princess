@@ -29,7 +29,6 @@ import lombok.NoArgsConstructor;
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
     "genre": "science",
-    "coverImageUrl": "https://... (파일이 있으면 서버에서 이 값은 무시)",
     "hashtags": "#진화#생물학#과학명저"
   },
   "content": "이 책은 생물학을 넘어서 인간 사회와 사고방식까지 통찰하게 해줍니다.",
@@ -41,7 +40,7 @@ public class ReadingLogRequest {
 
     @NotNull(message = "책 정보는 필수입니다.")
     @Schema(
-            description = "책 정보(JSON). 파일 업로드가 있을 경우 book.coverImageUrl은 무시됨",
+            description = "책 정보(JSON).",
             implementation = BookRequest.class
     )
     private BookRequest book;

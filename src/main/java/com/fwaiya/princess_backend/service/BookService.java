@@ -28,7 +28,7 @@ public class BookService {
     private final BookRepository bookRepository;
 
     /**
-     * 책 등록
+     * 책 등록  (이 엔드포인트는 이제 표지 이미지를 다루지 않음)
      */
     @Transactional
     public void saveBook(BookRequest request) {
@@ -36,7 +36,6 @@ public class BookService {
                 .title(request.getTitle())
                 .author(request.getAuthor())
                 .genre(request.getGenre())
-                .coverImageUrl(request.getCoverImageUrl())
                 .hashtags(request.getHashtags())
                 .build();
 
@@ -65,7 +64,7 @@ public class BookService {
     }
 
     /**
-     * 책 정보 수정
+     * 책 정보 수정 (표지 URL은 건드리지 않고 유지)
      */
     @Transactional
     public void updateBook(Long id, BookRequest request) {
@@ -77,7 +76,7 @@ public class BookService {
                 .title(request.getTitle())
                 .author(request.getAuthor())
                 .genre(request.getGenre())
-                .coverImageUrl(request.getCoverImageUrl())
+                .coverImageUrl(original.getCoverImageUrl())
                 .hashtags(request.getHashtags())
                 .build();
 
@@ -100,6 +99,7 @@ public class BookService {
      * title + author + genre 기준으로 책이 존재하면 반환,
      * 존재하지 않으면 새로 등록한 뒤 반환
      * → 독서록 작성 시 책 정보 기반으로 연결할 때 사용
+     * 표지 URL은 여기서 세팅하지 않음 (파일 업로드 경로에서만 반영)
      */
     @Transactional
     public Book findOrCreateBook(BookRequest request) {
@@ -112,7 +112,6 @@ public class BookService {
                     .title(request.getTitle())
                     .author(request.getAuthor())
                     .genre(request.getGenre())
-                    .coverImageUrl(request.getCoverImageUrl())
                     .hashtags(request.getHashtags())
                     .build();
             return bookRepository.save(newBook);

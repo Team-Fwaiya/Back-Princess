@@ -62,15 +62,15 @@ public class ReadingLogService {
             book.setHashtags(bookReq.getHashtags());
         }
 
-        // 3) 커버 파일이 있으면 S3 업로드 후 URL 교체 (파일 우선)
-        if (coverImage != null && !coverImage.isEmpty()) {
-            String url = s3Service.uploadBookCoverImage(coverImage);
-            book.setCoverImageUrl(url);
-            // JPA 변경감지로 커버 URL이 갱신됨
-        } else if (book.getCoverImageUrl() == null && bookReq.getCoverImageUrl() != null) {
-            // (연착륙) 파일이 없고 DB에도 없을 때만, 요청의 URL을 한시 허용
-            book.setCoverImageUrl(bookReq.getCoverImageUrl());
+        // 3) 파일 없으면 바로 예외
+        if (coverImage == null || coverImage.isEmpty()) {
+            // 파일 없으면 바로 예외
+            throw GeneralException.of(ErrorCode.INVALID_PROFILE_IMAGE);
         }
+
+        // 파일 업로드(무조건)
+        String url = s3Service.uploadBookCoverImage(coverImage);
+        book.setCoverImageUrl(url);
 
         // 4) 독서록 생성
         ReadingLog log = new ReadingLog();
@@ -84,30 +84,53 @@ public class ReadingLogService {
         user.updateReadCountAndReadingLevel();
     }
 
+    /** 수정: 등록과 동일하게 멀티파트 처리, 파일이 오면 교체 */
+    @Transactional
+    public void updateReadingLogWithMultipart(
+            Long readingLogId,
+            ReadingLogRequest req,
+            MultipartFile coverImage,               // 파일 선택(있으면 교체)
+            CustomUserDetails cu
+    ) {
+        User user = userRepository.findByUsername(cu.getUsername())
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
 
-//    @Transactional
-//    public void createReadingLog(ReadingLogRequest request, CustomUserDetails customUserDetails) {
-//        // 사용자 조회 (JWT 기반 인증 사용자)
-//        User user = userRepository.findByUsername(customUserDetails.getUsername())
-//                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
-//
-//        // 책 중복 검사 후 없으면 새로 등록
-//        Book book = bookService.findOrCreateBook(request.getBook());
-//
-//        // 독서록 생성 및 필드 설정
-//        ReadingLog readingLog = new ReadingLog();
-//        readingLog.setUser(user);
-//        readingLog.setBook(book);
-//        /*readingLog.setOneLineReview(request.getOneLineReview());*/
-//        readingLog.setContent(request.getContent());
-//        readingLog.setRating(request.getRating());
-//
-//        // 저장
-//        readingLogRepository.save(readingLog);
-//
-//        // 사용자의 읽은 책 수 및 레벨 갱신
-//        user.updateReadCountAndReadingLevel();
-//    }
+        ReadingLog log = readingLogRepository.findById(readingLogId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.READING_LOG_NOT_FOUND));
+
+        if (!log.getUser().getId().equals(user.getId())) {
+            throw new GeneralException(ErrorCode.UNAUTHORIZED_READING_LOG_UPDATE);
+        }
+
+        // 내용/평점 갱신
+        log.setContent(req.getContent());
+        log.setRating(req.getRating());
+
+        // 책 메타(제목/저자/장르) 변경 의도가 있다면 업서트(없다면 기존 그대로)
+        BookRequest bookReq = req.getBook();
+        if (bookReq != null) {
+            Book newBook = bookService.findOrCreateBook(bookReq);
+            log.setBook(newBook);
+
+            // 해시태그 최신값 반영(선택)
+            if ((newBook.getHashtags() == null || newBook.getHashtags().isBlank())
+                    && bookReq.getHashtags() != null) {
+                newBook.setHashtags(bookReq.getHashtags());
+            }
+
+            // 파일이 오면 표지 교체
+            if (coverImage != null && !coverImage.isEmpty()) {
+                String url = s3Service.uploadBookCoverImage(coverImage);
+                newBook.setCoverImageUrl(url);
+            }
+        } else {
+            // 책 변경 없이 커버만 교체하고 싶을 수 있음
+            if (coverImage != null && !coverImage.isEmpty()) {
+                String url = s3Service.uploadBookCoverImage(coverImage);
+                log.getBook().setCoverImageUrl(url);
+            }
+        }
+    }
 
     /**
      * 내 독서록 전체 목록 조회
@@ -146,29 +169,7 @@ public class ReadingLogService {
         return ReadingLogResponse.from(log);
     }
 
-    /**
-     * 독서록 수정
-     * - 한 줄 평, 감상 내용, 평점만 수정 가능
-     * - 책 정보는 수정하지 않음
-     */
-    @Transactional
-    public void updateReadingLog(Long readingLogId, ReadingLogRequest request, CustomUserDetails customUserDetails) {
-        User user = userRepository.findByUsername(customUserDetails.getUsername())
-                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
 
-        ReadingLog log = readingLogRepository.findById(readingLogId)
-                .orElseThrow(() -> new GeneralException(ErrorCode.READING_LOG_NOT_FOUND));
-
-        // 소유자 확인
-        if (!log.getUser().getId().equals(user.getId())) {
-            throw new GeneralException(ErrorCode.UNAUTHORIZED_READING_LOG_UPDATE);
-        }
-
-        // 필드 수정
-        // log.setOneLineReview(request.getOneLineReview());
-        log.setContent(request.getContent());
-        log.setRating(request.getRating());
-    }
 
     /**
      * 독서록 삭제
