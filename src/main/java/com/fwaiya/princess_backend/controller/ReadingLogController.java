@@ -69,6 +69,32 @@ public class ReadingLogController {
         return ApiResponse.onSuccess(SuccessCode.READING_LOG_CREATE_SUCCESS, "True");
     }
 
+    /** 수정: 등록과 동일한 방식(multipart). 파일이 오면 교체 */
+    @PutMapping(path = "/{readingLogId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "독서록 수정(파일 업로드 지원)",
+            description = "multipart/form-data로 readingLog(JSON) + coverImage(파일, 선택). coverImage가 있으면 표지 교체",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                            schema = @Schema(implementation = ReadingLogMultipartDoc.class)
+                    )
+            )
+    )
+    public ApiResponse<String> updateReadingLog(
+            @PathVariable Long readingLogId,
+            @RequestPart("readingLog") String readingLogJson,
+            @RequestPart(value = "coverImage", required = false) MultipartFile coverImage,
+            @AuthenticationPrincipal CustomUserDetails customUser
+    ) throws JsonProcessingException {
+        ReadingLogRequest request = objectMapper.readValue(readingLogJson, ReadingLogRequest.class);
+        readingLogService.updateReadingLogWithMultipart(readingLogId, request, coverImage, customUser);
+        return ApiResponse.onSuccess(SuccessCode.READING_LOG_UPDATE_SUCCESS, "True");
+    }
+
 
     /**
      * 내 독서록 목록 조회
@@ -96,20 +122,6 @@ public class ReadingLogController {
     ) {
         ReadingLogResponse response = readingLogService.getReadingLogById(readingLogId, customUserDetails);
         return ApiResponse.onSuccess(SuccessCode.READING_LOG_DETAIL_GET_SUCCESS, response);
-    }
-
-    /**
-     * 독서록 수정
-     */
-    @PutMapping("/{readingLogId}")
-    @Operation(summary = "독서록 수정", description = "로그인한 사용자가 작성한 독서록을 수정합니다.")
-    public ApiResponse<String> updateReadingLog(
-            @PathVariable Long readingLogId,
-            @RequestBody ReadingLogRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
-    ) {
-        readingLogService.updateReadingLog(readingLogId, request, customUserDetails);
-        return ApiResponse.onSuccess(SuccessCode.READING_LOG_UPDATE_SUCCESS, "True");
     }
 
     /**
